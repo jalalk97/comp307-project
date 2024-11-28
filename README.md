@@ -19,3 +19,15 @@ Make sure you have `node` and `npm` installed.
 #### On Windows
 
 I don't know, but it should be similar.
+
+### Running the frontend development server
+
+#### On Linux
+
+1. `cd /path/to/comp307-project`
+2. `cd frontend`
+3. `npm install`
+4. `npm run dev`
+5. The development server should be running http://localhost:3000
+
+#### On Windows
