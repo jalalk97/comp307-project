@@ -20,4 +20,6 @@ app.get("/", (_req, res) => {
   return res.send("<h1>Hello World!</h1>");
 });
 
+app.use("/auth", require("./routes/auth"));
+
 module.exports = app;
