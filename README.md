@@ -8,13 +8,21 @@ Make sure you have `node` and `npm` installed.
 
 ### Running the backend server
 
-#### On Linux (and MacOS and WSL on Windows probably)
+#### On Linux (and MacOS and WSL on Windows probably) (***\*\*\* Updated \*\*\****)
 
 1. If not done already, run `git clone https://github.com/jalalk97/comp307-project`
 2. `cd comp307-project/backend`
 3. `npm install`
-4. `npm start`
-5. The server should be running on http://localhost:5000
+4.
+    (***New***) Run this command to create a file called `.env` that contains environment variables used by the backend and the database.
+    ```
+    cat <<EOF > .env
+    PORT=5000
+    MONGODB_URI=mongodb+srv://admin:XjLT6K5xj7HVw318@cluster0.ud4jx.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
+    EOF
+    ```
+5. `npm start`
+6. The server should be running on http://localhost:5000
 
 #### On Windows
 
