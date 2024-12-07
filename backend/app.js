@@ -8,6 +8,7 @@ const corsOptions = require("./config/corsOptions");
 const app = express();
 
 connectDB();
+
 app.use(
   logger("common", {
     stream: fs.createWriteStream("./logs/access.log", { flags: "a" }),
@@ -23,5 +24,6 @@ app.get("/", (_req, res) => {
 });
 
 app.use("/auth", require("./routes/auth"));
+app.use("/users", require("./routes/users"));
 
 module.exports = app;
