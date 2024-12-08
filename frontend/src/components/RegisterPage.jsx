@@ -1,30 +1,25 @@
 import React from "react";
-import { useNavigate } from "react-router-dom"; // For navigation
+import { useNavigate } from "react-router-dom"; 
 
 const RegisterPage = () => {
-  const navigate = useNavigate(); // Initialize navigation
+  const navigate = useNavigate(); 
 
   return (
     <div style={styles.page}>
-      {/* Background Image */}
       <div style={styles.hero}>
-        <div style={styles.heroOverlay}></div> {/* White opaque overlay */}
+        <div style={styles.heroOverlay}></div> 
 
-        {/* Logo Positioned at the Top-Left */}
         <img
-          src="/logo.png" // Reference to the logo in the public folder
+          src="/logo.png" 
           alt="Logo"
           style={styles.logo}
         />
       </div>
 
-      {/* Register Form */}
       <div style={styles.registerBox}>
         <h2 style={styles.title}>Register</h2>
         <form style={styles.form}>
-          {/* Full Name Field */}
           <label style={styles.label} htmlFor="fullName">
-            Full Name *
           </label>
           <input
             style={styles.input}
@@ -32,10 +27,7 @@ const RegisterPage = () => {
             id="fullName"
             placeholder="Enter your full name"
           />
-
-          {/* Email Field */}
           <label style={styles.label} htmlFor="email">
-            Email *
           </label>
           <input
             style={styles.input}
@@ -44,9 +36,7 @@ const RegisterPage = () => {
             placeholder="Enter your email"
           />
 
-          {/* Password Field */}
           <label style={styles.label} htmlFor="password">
-            Password *
           </label>
           <input
             style={styles.input}
@@ -55,9 +45,7 @@ const RegisterPage = () => {
             placeholder="Enter your password"
           />
 
-          {/* Confirm Password Field */}
           <label style={styles.label} htmlFor="confirmPassword">
-            Confirm Password *
           </label>
           <input
             style={styles.input}
@@ -66,27 +54,25 @@ const RegisterPage = () => {
             placeholder="Confirm your password"
           />
 
-          {/* Register Button */}
           <button type="submit" style={styles.registerButton}>
             REGISTER
           </button>
         </form>
 
-        {/* Login Link */}
         <p style={styles.loginRedirect}>
           Already have an account?{" "}
           <span
             style={styles.loginLink}
-            onClick={() => navigate("/login")} // Navigate to Login Page
+            onClick={() => navigate("/login")} 
           >
             Login
           </span>
         </p>
 
-        {/* Back Button */}
+
         <button
           style={styles.backLink}
-          onClick={() => navigate("/")} // Navigate back to Landing Page
+          onClick={() => navigate("/")}
         >
           Back
         </button>
@@ -113,7 +99,7 @@ const styles = {
     left: 0,
     width: "100%",
     height: "100%",
-    backgroundImage: `url('https://grantme.com/wp-content/uploads/2021/09/mcgill.jpeg')`, // Replace with your background image
+    backgroundImage: `url('https://grantme.com/wp-content/uploads/2021/09/mcgill.jpeg')`, 
     backgroundSize: "cover",
     backgroundPosition: "center",
     zIndex: 1,
@@ -128,18 +114,18 @@ const styles = {
     zIndex: 2,
   },
   logo: {
-    position: "absolute", // Positioned relative to the page
-    top: "20px", // Distance from the top
-    left: "20px", // Distance from the left
-    maxWidth: "100px", // Maximum width for the logo
-    width: "10vw", // Makes it responsive: scales relative to viewport width
-    height: "auto", // Maintain aspect ratio
-    zIndex: 3, // Ensure it appears above the overlay
+    position: "absolute", 
+    top: "20px", 
+    left: "20px", 
+    maxWidth: "100px", 
+    width: "10vw", 
+    height: "auto", 
+    zIndex: 3, 
   },
   registerBox: {
     position: "relative",
     zIndex: 4,
-    backgroundColor: "#918e8e", // Light grey
+    backgroundColor: "#918e8e", 
     padding: "30px",
     borderRadius: "15px",
     maxWidth: "400px",
@@ -151,7 +137,7 @@ const styles = {
     margin: "0 0 20px",
     fontSize: "24px",
     fontWeight: "bold",
-    color: "#000000", // Black
+    color: "#000000", 
   },
   form: {
     display: "flex",
@@ -162,19 +148,19 @@ const styles = {
     textAlign: "left",
     fontSize: "14px",
     fontWeight: "bold",
-    color: "#000000", // Black
+    color: "#000000", 
   },
   input: {
     padding: "10px",
-    border: "1px solid #ffffff", // White border
+    border: "1px solid #ffffff", 
     borderRadius: "5px",
     fontSize: "16px",
     outline: "none",
     width: "100%",
   },
   registerButton: {
-    backgroundColor: "#990000", // Red
-    color: "#ffffff", // White
+    backgroundColor: "#990000", 
+    color: "#ffffff", 
     padding: "10px",
     border: "none",
     borderRadius: "5px",
@@ -185,7 +171,7 @@ const styles = {
   loginRedirect: {
     marginTop: "20px",
     fontSize: "14px",
-    color: "#000000", // Black
+    color: "#000000", 
   },
   loginLink: {
     color: "#990000",
@@ -195,7 +181,7 @@ const styles = {
   backLink: {
     marginTop: "20px",
     backgroundColor: "transparent",
-    color: "#990000", // Red
+    color: "#990000", 
     border: "none",
     fontSize: "14px",
     fontWeight: "bold",
