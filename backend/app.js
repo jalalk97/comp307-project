@@ -2,9 +2,12 @@ const express = require("express");
 const logger = require("morgan");
 const fs = require("fs");
 const cors = require("cors");
+const connectDB = require("./config/db");
 const corsOptions = require("./config/corsOptions");
 
 const app = express();
+
+connectDB();
 
 app.use(
   logger("common", {
@@ -21,5 +24,6 @@ app.get("/", (_req, res) => {
 });
 
 app.use("/auth", require("./routes/auth"));
+app.use("/users", require("./routes/users"));
 
 module.exports = app;
