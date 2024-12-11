@@ -3,7 +3,6 @@ const Feedback = require("../models/feedback");
 //function creates a feedback object and sends it to db
 async function createFeedback(req, res) {
     const {rating, comments} = req.body;
-
     if (!rating || rating < 1 || rating > 10) {
         return res.status(400).json({message: "Rating needs to be between 1 and 10 "});
 
@@ -11,7 +10,7 @@ async function createFeedback(req, res) {
 
     const feedback = await Feedback.create({
         rating, 
-        comment: comments || null,
+        comments,
     });
 
     console.log("created feedback:", feedback);
