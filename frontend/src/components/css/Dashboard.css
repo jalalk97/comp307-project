@@ -22,12 +22,12 @@
 
   .logo img {
     margin-left: 20px;
-    height: 5vw;
-    width: auto;
+    height: 120px;
+    width: 150px;
   }
 
   h2 {
-    font-size: 5vw;
+    font-size: 3vw;
   }
 
   .nav-buttons {
@@ -37,14 +37,14 @@
   }
 
   .nav-buttons button {
-    padding: 10px 20px;
+    padding: 8px 18px;
     background: none;
     border: 2px solid white;
     color: white;
     border-radius: 25px;
     cursor: pointer;
     font-size: 2vw;
-    transition: background 0.3s, color 0.3s;
+    transition: 0.3s, color 0.3s;
   }
 
   .nav-buttons button:hover {
@@ -74,15 +74,15 @@
   }
 
   .grid-item {
-    width: 25vw;
-    height: 10vw;
+    width: 20vw;
+    height: 8vw;
     background-color: #990000;
     border-radius: 15px;
     cursor: pointer;
     transition: transform 0.3s, box-shadow 0.3s;
     color: white;
     font-weight: bold;
-    font-size: 3vw;
+    font-size: 2vw;
     display: flex;
     align-items: center;
     justify-content: center;

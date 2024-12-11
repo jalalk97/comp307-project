@@ -1,6 +1,6 @@
 import React from "react";
 import { useNavigate  } from "react-router-dom";
-import './Dashboard.css'
+import './css/Dashboard.css'
 
 const Dashboard = () => {
     //allowing navigation between routes if a button press is ativated
@@ -8,7 +8,7 @@ const Dashboard = () => {
     const navigate = useNavigate();
 
     const goToLanding = () => {
-        navigate("/Landing");
+        navigate("/Dashboard");
     };
     const goToAlternate = () => {
         navigate("/AlternateMeeting");
@@ -20,7 +20,10 @@ const Dashboard = () => {
         navigate("/BookWithURL");
     };
     const goToLogout = () => {
-        navigate("/Logout");
+        localStorage.removeItem("token");
+        console.log("user has been logged out");
+        //Potentially have to notify backend
+        navigate("/Landing");
     };
     const goToCreateMeeting = () => {
         navigate("/CreateMeeting");
@@ -41,7 +44,7 @@ const Dashboard = () => {
         <div className="body">
           <header className="header">
             <div className="logo">
-              <img src="/logo.png" alt="McGill CS EZ Booking Logo" />
+              <img src="logo.png" alt="McGill CS EZ Booking Logo" />
             </div>
     
             <div className="nav-buttons">
@@ -57,7 +60,7 @@ const Dashboard = () => {
 
           <main className="main-content">
             {/*need to add user name*/}
-            <h2 style={{ marginTop: "5vw" }}>Welcome Back, Firstname</h2>
+            <h2 style={{ marginTop: "5vw" }}>Welcome Back!</h2>
             <div className="grid-container">
               <div className="grid-item" onClick={goToCreateMeeting}>
                 Create a Meeting
