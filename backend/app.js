@@ -25,5 +25,6 @@ app.get("/", (_req, res) => {
 
 app.use("/auth", require("./routes/auth"));
 app.use("/users", require("./routes/users"));
+app.use("/feedback", require("./routes/feedback"));
 
 module.exports = app;
