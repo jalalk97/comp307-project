@@ -1,8 +1,8 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import Logo from "../assests/logo2.png";
-import Home from "../assests/photo.jpg";
-import { FaRegCircleUser } from "react-icons/fa6";
+import Logo from "../../public/logo.png";
+import Home from "../../public/redpath.jpg";
+//import { FaRegCircleUser } from "react-icons/fa6";
 
 const AlternateMeeting = () => {
   const navigate = useNavigate();
@@ -16,9 +16,10 @@ const AlternateMeeting = () => {
         <div>
           <button style={{ padding: "10px 20px", background:"#990000", border:"1px solid #fff",color:"#fff" }}> Back to Dashboard</button>
         </div>
+        {/*
         <div style={styles.navRight}>
           <FaRegCircleUser style={{ color: "#fff", width: "40px", height: "40px" }}/>
-        </div>
+        </div> */}
       </nav>
 
       <div
