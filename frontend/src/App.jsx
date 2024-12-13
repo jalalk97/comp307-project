@@ -5,6 +5,8 @@ import LoginPage from "./components/LoginPage";
 import RegisterPage from "./components/RegisterPage"; // Import RegisterPage
 import FeedbackPage from "./components/Feedback";
 import Dashboard from "./components/Dashboard";
+import CreateMeeting from "./components/CreateMeeting";
+import AlternateMeeting from "./components/AlternateMeeting";
 
 
 function App() {
@@ -17,6 +19,8 @@ function App() {
         <Route path="register" element={<RegisterPage />} />
         <Route path="feedback" element={<FeedbackPage />} />
         <Route path="Dashboard" element={<Dashboard />} />
+        <Route path="create-meeting" element={<CreateMeeting />} />
+        <Route path="alternate-meeting" element={<AlternateMeeting />} />
       </Route>
     </Routes>
   );
