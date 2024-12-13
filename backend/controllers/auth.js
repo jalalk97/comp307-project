@@ -17,7 +17,7 @@ async function login(req, res) {
     });
   }
 
-  const user = await User.findOne({ email }).lean();
+  const user = await User.findOne({ email }).lean().exec();
   const isPasswordCorrect = user && await bcrypt.compare(password, user.password);
 
   if (!user || !isPasswordCorrect) {
@@ -28,6 +28,7 @@ async function login(req, res) {
 
   const userForToken = {
     email: user.email,
+    name: user.name,
     id: user._id,
   };
 
@@ -35,10 +36,7 @@ async function login(req, res) {
 
   res.status(200).json({
     token,
-    user: {
-      email: user.email,
-      id: user._id,
-    },
+    user: userForToken,
   });
 }
 

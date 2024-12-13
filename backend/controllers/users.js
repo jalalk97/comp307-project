@@ -3,11 +3,11 @@ const bcrypt = require("bcrypt");
 const { validateMcGillEmail } = require("../utils/validation");
 
 async function createUser(req, res) {
-  const { email, password } = req.body;
+  const { email, password, name } = req.body;
 
-  if (!email || !password || !validateMcGillEmail(email)) {
+  if (!email || !password || !name || !validateMcGillEmail(email)) {
     return res.status(422).json({
-      message: "Invalid email or password",
+      message: "Some fields are missing or invalid",
     });
   }
 
@@ -24,6 +24,7 @@ async function createUser(req, res) {
   const user = await User.create({
     email,
     password: passwordHash,
+    name,
   });
 
   console.log(user);
@@ -32,7 +33,7 @@ async function createUser(req, res) {
     res.status(201).json(user);
   } else {
     return res.status(422).json({
-      message: "Invalid email or password",
+      message: "Some fields are missing or invalid",
     });
   }
 }
