@@ -1,13 +1,12 @@
 import { Routes, Route } from "react-router-dom";
 import Layout from "./components/Layout";
 import Landing from "./components/Landing";
-import LoginPage from "./components/LoginPage";
+import LoginPage from "./features/auth/LoginPage";
 import RegisterPage from "./components/RegisterPage"; // Import RegisterPage
 import FeedbackPage from "./components/Feedback";
 import Dashboard from "./components/Dashboard";
 import CreateMeeting from "./components/CreateMeeting";
 import AlternateMeeting from "./components/AlternateMeeting";
-
 
 function App() {
   //for testing purposes leave as is. Will implement protected routes later
