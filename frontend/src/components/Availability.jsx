@@ -19,6 +19,7 @@ const Availability = () => {
 
     const onSubmitButton = () => {
       //logic to implement submit button
+      //need to implement setTableData(data) from api fetch
     }
 
     const containerStyle = {
@@ -192,13 +193,14 @@ const Availability = () => {
                   </tr>
                 </thead>
                 <tbody>
+                  {tableData.map((row, index) =>(
                   <tr>
-                    <td style={thTdStyle}></td>
-                    <td style={thTdStyle}></td>
-                    <td style={thTdStyle}></td>
-                    <td style={thTdStyle}></td>
-                    
+                    <td style={thTdStyle}>{row.field1}</td>
+                    <td style={thTdStyle}>{row.field2}</td>
+                    <td style={thTdStyle}>{row.field3}</td>
+                    <td style={thTdStyle}>{row.field4}</td>   
                   </tr>
+                  ))}
                 </tbody>
               </table>
             </div>
