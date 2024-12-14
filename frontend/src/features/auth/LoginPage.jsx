@@ -1,8 +1,29 @@
-import React from "react";
 import { useNavigate } from "react-router-dom"; // For navigation
+import { useLoginMutation } from "./authApiSlice";
+import { useDispatch } from "react-redux";
+import { userLoggedIn } from "./authSlice";
 
 const LoginPage = () => {
+  const dispatch = useDispatch();
   const navigate = useNavigate(); // Initialize navigation
+  const [login, { isLoading }] = useLoginMutation();
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    const { elements } = e.currentTarget;
+    const email = elements.email.value;
+    const password = elements.password.value;
+    console.log({ email, password });
+
+    try {
+      const { token, user } = await login({ email, password }).unwrap();
+      dispatch(userLoggedIn(token, user));
+      navigate("/Dashboard");
+    } catch (err) {
+      console.log(err.message);
+    }
+  };
 
   return (
     <div style={styles.page}>
@@ -21,7 +42,7 @@ const LoginPage = () => {
       {/* Login Form */}
       <div style={styles.loginBox}>
         <h2 style={styles.title}>LOGIN</h2>
-        <form style={styles.form}>
+        <form style={styles.form} onSubmit={handleSubmit}>
           {/* Email Field */}
           <label style={styles.label} htmlFor="email">
             Email
@@ -47,7 +68,7 @@ const LoginPage = () => {
           />
 
           {/* Login Button */}
-          <button type="submit" style={styles.loginButton}>
+          <button type="submit" style={styles.loginButton} disabled={isLoading}>
             LOGIN
           </button>
         </form>
