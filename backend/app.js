@@ -23,8 +23,10 @@ app.get("/", (_req, res) => {
   return res.send("<h1>Hello World!</h1>");
 });
 
+
 app.use("/auth", require("./routes/auth"));
 app.use("/users", require("./routes/users"));
 app.use("/feedback", require("./routes/feedback"));
+app.use("/meeting", require("./routes/meeting"));
 
 module.exports = app;
