@@ -49,7 +49,7 @@ const Dashboard = () => {
         <div className="body">
           <header className="header">
             <div className="logo">
-              <img src="logo.png" alt="McGill CS EZ Booking Logo" />
+              <img src="logo2.png" alt="McGill CS EZ Booking Logo" />
             </div>
     
             <div className="nav-buttons">
