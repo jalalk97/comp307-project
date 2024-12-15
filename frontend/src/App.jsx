@@ -2,7 +2,7 @@ import { Routes, Route } from "react-router-dom";
 import Layout from "./components/Layout";
 import Landing from "./components/Landing";
 import LoginPage from "./features/auth/LoginPage";
-import RegisterPage from "./components/RegisterPage"; // Import RegisterPage
+import RegisterPage from "./features/auth/RegisterPage.jsx"; // Import RegisterPage
 import FeedbackPage from "./components/Feedback";
 import Dashboard from "./components/Dashboard";
 import CreateMeeting from "./components/CreateMeeting";

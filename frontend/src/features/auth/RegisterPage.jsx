@@ -7,8 +7,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import {
   useLoginMutation,
   useRegisterMutation,
-} from "../features/auth/authApiSlice";
-import { userLoggedIn } from "../features/auth/authSlice";
+} from "./authApiSlice";
+import { userLoggedIn } from "./authSlice";
 
 const schema = z
   .object({
