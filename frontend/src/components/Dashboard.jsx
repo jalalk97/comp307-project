@@ -16,7 +16,7 @@ const Dashboard = () => {
         navigate("/");
     };
     const goToAlternate = () => {
-        navigate("/AlternateMeeting");
+        navigate("/alternate-meeting");
     };
     const goToActiveAppointmentAndHistory = () => {
         navigate("/ActiveAppointmentsAndHistory");

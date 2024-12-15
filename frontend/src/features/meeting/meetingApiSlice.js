@@ -1,6 +1,6 @@
 import { apiSlice } from "../api/apiSlice";
 
-export const getMeetingSlice = apiSlice.injectEndpoints({
+export const meetingApiSlice = apiSlice.injectEndpoints({
     endpoints: (builder) => ({
         getMeeting: builder.mutation({
             query:(urlParam) => ({
@@ -11,4 +11,4 @@ export const getMeetingSlice = apiSlice.injectEndpoints({
     }),
 });
 
-export const { useGetMeetingMutation } = getMeetingSlice;
+export const { useGetAvailabilityMutation } = meetingApiSlice;
