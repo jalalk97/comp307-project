@@ -11,4 +11,4 @@ export const meetingApiSlice = apiSlice.injectEndpoints({
     }),
 });
 
-export const { useGetAvailabilityMutation } = meetingApiSlice;
+export const { useGetMeetingMutation } = meetingApiSlice;
