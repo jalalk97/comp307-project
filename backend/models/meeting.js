@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-const userSchema = require("./user");
 
 const meetingSchema = new mongoose.Schema({
     dateRange: {
@@ -13,8 +12,9 @@ const meetingSchema = new mongoose.Schema({
     },
 
     host: {
-        type:userSchema,
-        required: true
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+        required: true,
     },
 
     multiple_people: {
@@ -37,6 +37,6 @@ const meetingSchema = new mongoose.Schema({
 
 
 
-const Meeting = mongoose.model("meeting", meetingSchema);
+const Meeting = mongoose.model("Meeting", meetingSchema);
 
 module.exports = Meeting;
