@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-const userSchema = require("./user");
 const meetingSchema = require("./meeting");
 
 const bookingSchema = new mongoose.Schema ({
@@ -19,10 +18,13 @@ const bookingSchema = new mongoose.Schema ({
         type:Boolean,
         require:true
     },
+
     user: {
-        type: userSchema,
-        require:true
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+        required: true,
     },
+
     item_borrow: {
         type:String
     }

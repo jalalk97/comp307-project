@@ -1,12 +1,17 @@
+import { useState } from "react";
 import { useNavigate } from "react-router-dom"; // For navigation
 import { useLoginMutation } from "./authApiSlice";
 import { useDispatch } from "react-redux";
 import { userLoggedIn } from "./authSlice";
 
+import ErrorMessage from "../../components/ErrorMessage";
+
 const LoginPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate(); // Initialize navigation
+
   const [login, { isLoading }] = useLoginMutation();
+  const [error, setError] = useState(null);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -17,11 +22,12 @@ const LoginPage = () => {
     console.log({ email, password });
 
     try {
+      setError(null);
       const { token, user } = await login({ email, password }).unwrap();
       dispatch(userLoggedIn(token, user));
       navigate("/Dashboard");
     } catch (err) {
-      console.log(err.message);
+      setError(err.data.message);
     }
   };
 
@@ -42,6 +48,7 @@ const LoginPage = () => {
       {/* Login Form */}
       <div style={styles.loginBox}>
         <h2 style={styles.title}>LOGIN</h2>
+        {error && <ErrorMessage message={error} />}
         <form style={styles.form} onSubmit={handleSubmit}>
           {/* Email Field */}
           <label style={styles.label} htmlFor="email">

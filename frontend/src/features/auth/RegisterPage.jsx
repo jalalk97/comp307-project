@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
@@ -9,6 +10,8 @@ import {
   useRegisterMutation,
 } from "./authApiSlice";
 import { userLoggedIn } from "./authSlice";
+
+import ErrorMessage from "../../components/ErrorMessage";
 
 const schema = z
   .object({
@@ -29,27 +32,12 @@ const schema = z
     path: ["confirmPassword"], // Attach the error to the passwordConfirmation field
   });
 
-const ErrorMessage = ({ message }) => {
-  return (
-    <p
-      style={{
-        fontSize: "14px",
-        color: "#990000",
-        margin: 0,
-        padding: 0,
-        textAlign: "left",
-      }}
-    >
-      {message}
-    </p>
-  );
-};
-
 const RegisterPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [userRegister, { isRegisterLoading }] = useRegisterMutation();
   const [login, { isLoginLoading }] = useLoginMutation();
+  const [error, setError] = useState(null);
 
   const {
     register,
@@ -62,12 +50,13 @@ const RegisterPage = () => {
   const onSubmit = async (data) => {
     const { name, email, password } = data;
     try {
+      setError(null);
       await userRegister({ name, email, password }).unwrap();
       const { token, user } = await login({ email, password }).unwrap();
       dispatch(userLoggedIn(token, user));
       navigate("/Dashboard");
     } catch (err) {
-      console.log(err.message);
+      setError(err.data.message);
     }
   };
 
@@ -81,6 +70,7 @@ const RegisterPage = () => {
 
       <div style={styles.registerBox}>
         <h2 style={styles.title}>Register</h2>
+        {error && <ErrorMessage message={error} />}
         <form style={styles.form} onSubmit={handleSubmit(onSubmit)}>
           <label style={styles.label} htmlFor="fullName"></label>
           {errors.name && <ErrorMessage message={errors.name.message} />}
