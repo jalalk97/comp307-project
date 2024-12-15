@@ -1,10 +1,14 @@
 import React from "react";
+import { useDispatch } from "react-redux";
 import { useNavigate  } from "react-router-dom";
+
 import './css/Dashboard.css'
+import { userLoggedOut } from "../features/auth/authSlice";
 
 const Dashboard = () => {
     //allowing navigation between routes if a button press is ativated
     //need to add a function for checking if tokens are valid
+    const dispatch = useDispatch();
     const navigate = useNavigate();
 
     const goToLanding = () => {
@@ -20,10 +24,10 @@ const Dashboard = () => {
         navigate("/BookWithURL");
     };
     const goToLogout = () => {
-        localStorage.removeItem("token");
+        dispatch(userLoggedOut())
         console.log("user has been logged out");
         //Potentially have to notify backend
-        navigate("/Landing");
+        navigate("/");
     };
     const goToCreateMeeting = () => {
         navigate("/CreateMeeting");

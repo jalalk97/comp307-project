@@ -9,7 +9,26 @@ export const authApiSlice = apiSlice.injectEndpoints({
         body: credentials,
       }),
     }),
+    register: builder.mutation({
+      query: (userInfo) => ({
+        url: "/auth/register",
+        method: "POST",
+        body: userInfo,
+      })
+    })
   }),
 });
 
-export const { useLoginMutation } = authApiSlice;
+export const { useLoginMutation, useRegisterMutation } = authApiSlice;
+
+export const loginListeners = (startListening) => {
+  startListening({
+    matcher: authApiSlice.endpoints.login.matchFulfilled,
+    effect: (action) => {
+      const { token } = action.payload;
+      if (token) {
+        localStorage.setItem("token", token);
+      }
+    },
+  });
+};
