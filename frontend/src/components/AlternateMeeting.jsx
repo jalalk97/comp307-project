@@ -1,7 +1,5 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import Logo from "../../public/logo.png";
-import Home from "../../public/redpath.jpg";
 //import { FaRegCircleUser } from "react-icons/fa6";
 
 const AlternateMeeting = () => {
@@ -11,7 +9,7 @@ const AlternateMeeting = () => {
     <div>
       <nav style={styles.navbar}>
         <div style={styles.navLeft}>
-          <img src={Logo} alt="logo" width={150} height={100} />
+          <img src="/logo2.png" alt="logo" width={150} height={100} />
         </div>
         <div>
           <button style={{ padding: "10px 20px", background:"#990000", border:"1px solid #fff",color:"#fff" }}> Back to Dashboard</button>
@@ -71,7 +69,7 @@ const AlternateMeeting = () => {
               border: "4px solid red",
               height: "300px",
               backgroundImage:
-                `url(${Home})`,
+                `url('/redpath.jpg')`,
               backgroundSize: "cover",
               backgroundPosition: "center",
             }}
