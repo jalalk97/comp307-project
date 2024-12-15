@@ -2,7 +2,7 @@ import { apiSlice } from "../api/apiSlice";
 
 export const meetingApiSlice = apiSlice.injectEndpoints({
     endpoints: (builder) => ({
-        getAvailability: builder.mutation({
+        getMeeting: builder.mutation({
             query:(urlParam) => ({
                 url: `/meeting?${new URLSearchParams(urlParam)}`,
                 method: 'GET',
