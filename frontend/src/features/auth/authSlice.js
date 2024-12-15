@@ -40,6 +40,7 @@ export const userLoggedOutListeners = (startListening) => {
     actionCreator: userLoggedOut,
     effect: () => {
       localStorage.removeItem("token");
+      localStorage.removeItem("currentUser");
     },
   });
 };

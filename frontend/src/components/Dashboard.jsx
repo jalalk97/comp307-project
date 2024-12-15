@@ -1,9 +1,8 @@
-import React from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate  } from "react-router-dom";
 
 import './css/Dashboard.css'
-import { userLoggedOut } from "../features/auth/authSlice";
+import { selectCurrentUser, userLoggedOut } from "../features/auth/authSlice";
 
 const Dashboard = () => {
     //allowing navigation between routes if a button press is ativated
@@ -11,8 +10,10 @@ const Dashboard = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
+    const currentUser = useSelector(selectCurrentUser);
+
     const goToLanding = () => {
-        navigate("/Dashboard");
+        navigate("/");
     };
     const goToAlternate = () => {
         navigate("/AlternateMeeting");
@@ -64,7 +65,7 @@ const Dashboard = () => {
 
           <main className="main-content">
             {/*need to add user name*/}
-            <h2 style={{ marginTop: "5vw" }}>Welcome Back!</h2>
+            <h2 style={{ marginTop: "5vw" }}>{`Welcome Back ${currentUser?.name ?? ""}!`}</h2>
             <div className="grid-container">
               <div className="grid-item" onClick={goToCreateMeeting}>
                 Create a Meeting
