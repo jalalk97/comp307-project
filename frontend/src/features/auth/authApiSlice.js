@@ -14,8 +14,8 @@ export const authApiSlice = apiSlice.injectEndpoints({
         url: "/auth/register",
         method: "POST",
         body: userInfo,
-      })
-    })
+      }),
+    }),
   }),
 });
 
@@ -25,9 +25,10 @@ export const loginListeners = (startListening) => {
   startListening({
     matcher: authApiSlice.endpoints.login.matchFulfilled,
     effect: (action) => {
-      const { token } = action.payload;
+      const { token, user } = action.payload;
       if (token) {
         localStorage.setItem("token", token);
+        localStorage.setItem("currentUser", JSON.stringify(user));
       }
     },
   });
