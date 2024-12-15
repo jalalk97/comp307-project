@@ -1,41 +1,121 @@
 const Meeting = require("../models/meeting");
 
 //function will return a meeting with the required URL
-async function getMeeting(req, res){
-    const { url } = req.params;
-    if(!url) {
-        return res.status(400).json({ message: "URL is required"});
+async function getMeeting(req, res) {
+  const { url } = req.params;
+  if (!url) {
+    return res.status(400).json({ message: "URL is required" });
+  }
+
+  if (typeof url !== "string") {
+    return res.status(400).json({
+      message: "Provided URL is not a string",
+    });
+  }
+
+  const meeting = await Meeting.findOne({ url }).lean().exec();
+
+  if (!meeting) {
+    return res.status(404).json({
+      message: "Did not find a meeting with the corresponding url",
+    });
+  }
+  const meeting_data = {
+    dateRange: meeting.dateRange,
+    timeRange: meeting.timeRange,
+    host: meeting.host,
+    multiple_people: meeting.multiple_people,
+    is_weekly: meeting.is_weekly,
+    url: meeting.url,
+  };
+
+  res.status(200).json({
+    meeting: meeting_data,
+  });
+
+  return;
+}
+
+async function createMeeting(req, res) {
+  try {
+    const { dateRange, timeRange, host, multiple_people, is_weekly, url } =
+      req.body;
+
+    console.log({ dateRange, timeRange, host, url });
+    if (!dateRange || !timeRange || !host || !url) {
+      return res.status(400).json({
+        message: "Missing required fields: dateRange, timeRange, host, or url.",
+      });
     }
 
-    if(typeof url !== "string") {
-        return res.status(400).json({
-            message: "Provided URL is not a string",
-        });
+    const existingMeeting = await Meeting.findOne({ url }).lean().exec();
+    if (existingMeeting) {
+      return res.status(409).json({
+        message: "A meeting with this URL already exists.",
+      });
     }
 
-    const meeting = await Meeting.findOne({ url }).lean().exec();
+    const newMeeting = new Meeting({
+      dateRange,
+      timeRange,
+      host,
+      multiple_people: multiple_people || false,
+      is_weekly: is_weekly || false,
+      url,
+    });
 
-    if(!meeting){
-        return res.status(404).json({
-            message: "Did not find a meeting with the corresponding url",
-        });
+    await newMeeting.save();
+
+    res.status(201).json({
+      message: "Meeting created successfully",
+      meeting: {
+        dateRange: newMeeting.dateRange,
+        timeRange: newMeeting.timeRange,
+        host: newMeeting.host,
+        multiple_people: newMeeting.multiple_people,
+        is_weekly: newMeeting.is_weekly,
+        url: newMeeting.url,
+      },
+    });
+  } catch (error) {
+    console.error("Error creating meeting:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+}
+
+async function updateMeeting(req, res) {
+  try {
+    const updateFields = req.body; // Get update fields from request body
+
+    if (!updateFields.url) {
+      return res
+        .status(400)
+        .json({ message: "URL is required to update a meeting." });
     }
-    const meeting_data = {
-        dateRange: meeting.dateRange,
-        timeRange: meeting.timeRange,
-        host: meeting.host,
-        multiple_people: meeting.multiple_people,
-        is_weekly: meeting.is_weekly,
-        url: meeting.url
-    };
+
+    // Find the meeting by URL and update it with the provided fields
+    const updatedMeeting = await Meeting.findOneAndUpdate(
+      { url: updateFields.url }, // Find by URL
+      { $set: updateFields }, // Update with provided fields
+      { new: true, runValidators: true }, // Return the updated document and validate fields
+    );
+
+    if (!updatedMeeting) {
+      return res.status(404).json({ message: "Meeting not found." });
+    }
 
     res.status(200).json({
-        meeting: meeting_data
+      message: "Meeting updated successfully",
+      meeting: updatedMeeting,
     });
-    
-    return;
-};
+  } catch (error) {
+    console.error("Error updating meeting:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+}
 
 module.exports = {
-    getMeeting,
+  getMeeting,
+  createMeeting,
+  updateMeeting,
 };

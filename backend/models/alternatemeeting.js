@@ -1,9 +1,9 @@
 const mongoose = require("mongoose");
-const meetingSchema = require("./meeting");
 
 const alternateSchema = mongoose.Schema({
   meeting: {
-    type: meetingSchema,
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Meeting",
     require: true,
   },
   user: {
@@ -22,4 +22,4 @@ const alternateSchema = mongoose.Schema({
 });
 
 const AlternateMeeting = mongoose.model("AlternateMeeting", alternateSchema);
-module.exports(AlternateMeeting);
+module.exports = AlternateMeeting;

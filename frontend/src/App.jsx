@@ -7,7 +7,7 @@ import FeedbackPage from "./components/Feedback";
 import Dashboard from "./components/Dashboard";
 import CreateMeeting from "./components/CreateMeeting";
 import AlternateMeeting from "./components/AlternateMeeting";
-import Availability from "./components/Availability";
+import Availability from "./features/meeting/Availability";
 
 function App() {
   //for testing purposes leave as is. Will implement protected routes later

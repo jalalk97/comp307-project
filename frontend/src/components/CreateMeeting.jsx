@@ -1,32 +1,89 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-//import { FaRegCircleUser } from "react-icons/fa6";
+import Logo from "../assests/logo2.png";
+import Home from "../assests/photo.jpg";
+import { FaRegCircleUser } from "react-icons/fa6";
+import { useSelector } from "react-redux";
+import { selectCurrentUser } from "../features/auth/authSlice";
 
 const CreateMeeting = () => {
   const navigate = useNavigate();
 
-  const [selectedType, setSelectedType] = useState("");
+  const currentUser = useSelector(selectCurrentUser);
+
+  const [formData, setFormData] = useState({
+    bookingName: "",
+    name: "",
+    startDate: "",
+    endDate: "",
+    startTime: "",
+    endTime: "",
+    bookingType: "",
+  });
+
+  const [generatedURL, setGeneratedURL] = useState("");
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+  };
 
   const handleButtonClick = (type) => {
-    setSelectedType(type);
+    setFormData({ ...formData, bookingType: type });
   };
 
   const getButtonStyle = (type) => ({
     margin: "5px",
     padding: "10px 20px",
     borderRadius: "5px",
-    background: selectedType === type ? "#990000" : "#fff",
-    color: selectedType === type ? "#fff" : "#000",
+    background: formData.bookingType === type ? "#990000" : "#fff",
+    color: formData.bookingType === type ? "#fff" : "#000",
     border: "1px solid black",
     cursor: "pointer",
   });
 
+  const handleSubmit = async () => {
+    const randomURL = `https://meeting.com/${Math.random().toString(36).substr(2, 9)}`;
+    setGeneratedURL(randomURL);
+
+    const meetingData = {
+      bookingName: formData.bookingName,
+      name: formData.name,
+      dateRange: {
+        startDate: formData.startDate,
+        endDate: formData.endDate,
+      },
+      timeRange: {
+        startTime: formData.startTime,
+        endTime: formData.endTime,
+      },
+      bookingType: formData.bookingType,
+      url: randomURL,
+      host: currentUser.id,
+    };
+
+    try {
+      const response = await fetch("http://localhost:4000/meeting", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(meetingData),
+      });
+
+      const data = await response.json();
+      console.log("Meeting created:", data);
+      setGeneratedURL(data.bookingUrl); // Set the URL after creation
+    } catch (error) {
+      console.error("Error creating meeting:", error);
+    }
+  };
 
   return (
     <div>
       <nav style={styles.navbar}>
         <div style={styles.navLeft}>
-          <img src='/logo2.png' alt="logo" width={150} height={100} />
+          <img src={Logo} alt="logo" width={150} height={100} />
         </div>
         <div>
           <button
@@ -36,17 +93,16 @@ const CreateMeeting = () => {
               border: "1px solid #fff",
               color: "#fff",
             }}
+            onClick={() => navigate("/dashboard")}
           >
-            {" "}
             Back to Dashboard
           </button>
         </div>
-        {/*
         <div style={styles.navRight}>
           <FaRegCircleUser
             style={{ color: "#fff", width: "40px", height: "40px" }}
           />
-        </div>*/}
+        </div>
       </nav>
 
       <div
@@ -61,9 +117,12 @@ const CreateMeeting = () => {
         <div style={{ width: "100%" }}>
           <h1 style={{ marginBottom: "20px" }}>Create a Booking</h1>
 
-          <div style={{ marginBottom: "10px", marginTop: "20px" }}>
+          <div style={{ marginBottom: "10px", marginTop: "30px" }}>
             <h3>Name of Booking</h3>
             <input
+              name="bookingName"
+              value={formData.bookingName}
+              onChange={handleInputChange}
               style={{
                 display: "block",
                 width: "100%",
@@ -72,9 +131,12 @@ const CreateMeeting = () => {
               }}
             />
           </div>
-          <div style={{ marginTop: "16px" }}>
+          {/* <div style={{ marginTop: "16px" }}>
             <h3>Name</h3>
             <input
+              name="name"
+              value={formData.name}
+              onChange={handleInputChange}
               style={{
                 display: "block",
                 width: "100%",
@@ -82,6 +144,19 @@ const CreateMeeting = () => {
                 marginTop: "5px",
               }}
             />
+          </div> */}
+
+          <div style={{ paddingTop: "30px" }}>
+            <h1>Booking type</h1>
+            {["Bi-Weekly"].map((type) => (
+              <button
+                key={type}
+                style={getButtonStyle(type)}
+                onClick={() => handleButtonClick(type)}
+              >
+                {type}
+              </button>
+            ))}
           </div>
         </div>
 
@@ -97,7 +172,7 @@ const CreateMeeting = () => {
               width: "70%",
               border: "4px solid red",
               height: "300px",
-              backgroundImage: `url('/redpath.jpg)`,
+              backgroundImage: `url(${Home})`,
               backgroundSize: "cover",
               backgroundPosition: "center",
             }}
@@ -106,23 +181,13 @@ const CreateMeeting = () => {
       </div>
 
       <div style={{ padding: "10px 20px" }}>
-      <h1>Booking type</h1>
-      {["Bi-Weekly", "Bi-Monthly", "Daily", "One Day"].map((type) => (
-        <button
-          key={type}
-          style={getButtonStyle(type)}
-          onClick={() => handleButtonClick(type)}
-        >
-          {type}
-        </button>
-      ))}
-    </div>
-
-      <div style={{ padding: "10px 20px" }}>
         <div style={{ display: "flex", flexWrap: "wrap" }}>
           <div style={{ margin: "10px" }}>
             <h3>Start Date</h3>
             <input
+              name="startDate"
+              value={formData.startDate}
+              onChange={handleInputChange}
               style={{
                 display: "block",
                 width: "200px",
@@ -135,6 +200,9 @@ const CreateMeeting = () => {
           <div style={{ margin: "10px" }}>
             <h3>End Date</h3>
             <input
+              name="endDate"
+              value={formData.endDate}
+              onChange={handleInputChange}
               style={{
                 display: "block",
                 width: "200px",
@@ -147,6 +215,9 @@ const CreateMeeting = () => {
           <div style={{ margin: "10px" }}>
             <h3>Start Time</h3>
             <input
+              name="startTime"
+              value={formData.startTime}
+              onChange={handleInputChange}
               style={{
                 display: "block",
                 width: "200px",
@@ -159,6 +230,9 @@ const CreateMeeting = () => {
           <div style={{ margin: "10px" }}>
             <h3>End Time</h3>
             <input
+              name="endTime"
+              value={formData.endTime}
+              onChange={handleInputChange}
               style={{
                 display: "block",
                 width: "200px",
@@ -173,20 +247,34 @@ const CreateMeeting = () => {
 
       <div style={{ padding: "10px 20px" }}>
         <button
+          onClick={handleSubmit}
           style={{ padding: "10px 20px", background: "#990000", color: "#fff" }}
         >
           GET URL
         </button>
+        {generatedURL && (
+          <div style={{ marginTop: "20px" }}>
+            <h3>Generated URL:</h3>
+            <p>{generatedURL}</p>
+          </div>
+        )}
       </div>
 
       <footer style={{ background: "#000", color: "#fff", padding: "20px" }}>
         <h3>Additional Link</h3>
-        <div style={{ display: "flex", paddingTop: "20px", gap:20,paddingLeft:"20px" }}>
-          <div style={{ display:"flex", flexDirection:"column",gap:20}}>
+        <div
+          style={{
+            display: "flex",
+            paddingTop: "20px",
+            gap: 20,
+            paddingLeft: "20px",
+          }}
+        >
+          <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
             <p>Example</p>
             <p>Example</p>
           </div>
-          <div style={{ display:"flex", flexDirection:"column",gap:20}}>
+          <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
             <p>Example</p>
             <p>Example</p>
           </div>
@@ -216,86 +304,6 @@ const styles = {
     gap: "20px",
     flexWrap: "wrap",
     padding: "8px 1px",
-  },
-  navButton: {
-    backgroundColor: "transaprent",
-    border: "1px solid #ffffff",
-    color: "#fff",
-    padding: "8px 15px",
-    borderRadius: "5px",
-    cursor: "pointer",
-    fontWeight: "bold",
-    fontSize: "14px",
-  },
-  hero: {
-    position: "relative",
-    height: "50vh",
-    backgroundImage: `url('https://grantme.com/wp-content/uploads/2021/09/mcgill.jpeg')`,
-    backgroundSize: "cover",
-    backgroundPosition: "center",
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  heroOverlay: {
-    position: "absolute",
-    top: 0,
-    left: 0,
-    width: "100%",
-    height: "100%",
-    backgroundColor: "rgba(255, 255, 255, 0.5)",
-    zIndex: 1,
-  },
-  heroContent: {
-    position: "relative",
-    zIndex: 2,
-    textAlign: "center",
-  },
-  logo: {
-    width: "30%",
-    height: "auto",
-  },
-  aboutSection: {
-    padding: "20px",
-    backgroundColor: "#ffffff",
-    textAlign: "center",
-    flex: "1 0 auto",
-  },
-  aboutBox: {
-    backgroundColor: "#918e8e",
-    borderRadius: "10px",
-    padding: "20px",
-    maxWidth: "80%",
-    margin: "0 auto",
-    boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
-  },
-  aboutTitle: {
-    fontSize: "clamp(18px, 3vw, 24px)",
-    fontWeight: "bold",
-    marginBottom: "10px",
-    color: "#3d2c2c",
-  },
-  aboutText: {
-    fontSize: "clamp(14px, 2vw, 16px)",
-    color: "#000000",
-    lineHeight: "1.5",
-  },
-  footer: {
-    backgroundColor: "#000000",
-    padding: "20px",
-    textAlign: "center",
-    flexShrink: 0,
-  },
-  footerLinks: {
-    display: "flex",
-    justifyContent: "center",
-    gap: "15px",
-    flexWrap: "wrap",
-  },
-  footerLink: {
-    color: "#ffffff",
-    textDecoration: "none",
-    fontSize: "14px",
   },
 };
 
