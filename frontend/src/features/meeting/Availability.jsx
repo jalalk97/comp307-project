@@ -34,6 +34,7 @@ const Availability = () => {
           dispatch(fetchMeeting(data.meeting));
         } else {
             alert("No data found for the provided URL");
+            return;
         } 
       } catch (err) {
         console.error("Error fetching meeting data", err);
@@ -204,7 +205,7 @@ const Availability = () => {
               style={inputStyle}
             />
             <button style={submitStyle} onClick={onSubmitButton}>
-              {loading ? "Loading..." : "SUBMIT"}
+              SUBMIT
             </button>
           </div>
           <div style={sectionStyle}>
