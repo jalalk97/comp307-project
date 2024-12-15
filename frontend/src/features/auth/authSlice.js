@@ -1,7 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-import { authApiSlice } from "./authApiSlice";
-
 const initialState = {
   token: null,
   currentUser: null,
@@ -37,14 +35,11 @@ export default authSlice.reducer;
 export const selectToken = (state) => state.auth.token;
 export const selectCurrentUser = (state) => state.auth.currentUser;
 
-export const loginListeners = (startListening) => {
+export const userLoggedOutListeners = (startListening) => {
   startListening({
-    matcher: authApiSlice.endpoints.login.matchFulfilled,
-    effect: async (action) => {
-      const { token } = action.payload;
-      if (token) {
-        localStorage.setItem("token", token);
-      }
+    actionCreator: userLoggedOut,
+    effect: () => {
+      localStorage.removeItem("token");
     },
   });
 };
