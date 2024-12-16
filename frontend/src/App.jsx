@@ -10,6 +10,9 @@ import AlternateMeeting from "./components/AlternateMeeting";
 import RemoveMeeting from "./components/RemoveMeeting";
 import Availability from "./features/meeting/Availability";
 import CreateBorrowMeeting from "./components/CreateBorrowMeeting";
+import ActiveAppointmentsAndHistory from "./components/ActiveAppointmentsAndHistory"; 
+import BookWithURL from "./components/BookWithURL";
+
 
 function App() {
   //for testing purposes leave as is. Will implement protected routes later
@@ -26,6 +29,8 @@ function App() {
         <Route path="availability" element={<Availability />} />
         <Route path="create-borrow-meeting" element={<CreateBorrowMeeting />} />
         <Route path="remove-meeting" element={<RemoveMeeting />} />
+        <Route path="active-appointment-history" element={<ActiveAppointmentsAndHistory />} />
+        <Route path="book-with-url" element={<BookWithURL />} />
       </Route>
     </Routes>
   );
