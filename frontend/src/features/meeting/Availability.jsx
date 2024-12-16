@@ -254,9 +254,7 @@ const Availability = () => {
                     data.meeting_data.map((meeting) => (
                       <tr key={meeting._id}>
                         <td style={thTdStyle}>
-                          <a href={meeting.url} target="_blank" rel="noopener noreferrer">
                             {meeting.url}
-                          </a>
                         </td>
                         <td style={thTdStyle}>{meeting.host.email}</td>
                         <td style={thTdStyle}>

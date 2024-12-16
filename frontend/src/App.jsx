@@ -11,7 +11,7 @@ import RemoveMeeting from "./components/RemoveMeeting";
 import Availability from "./features/meeting/Availability";
 import CreateBorrowMeeting from "./components/CreateBorrowMeeting";
 import ActiveAppointmentsAndHistory from "./components/ActiveAppointmentsAndHistory"; 
-import BookWithURL from "./components/BookWithURL";
+import BookWithURL from "./features/booking/BookWithURL";
 
 
 function App() {

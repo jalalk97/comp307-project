@@ -4,13 +4,22 @@ import { useNavigate } from "react-router-dom"; // Import useNavigate for naviga
 const Landing = () => {
   const navigate = useNavigate(); // Initialize navigation
 
+  const goToBookWithURL= () => {
+
+  }
+
+  const appointmentHistoryL= () => {
+
+  }
+
+
   return (
     <div style={styles.page}>
       {/* Navbar */}
       <nav style={styles.navbar}>
         <div style={styles.navLeft}>
-          <button style={styles.navButton}>Appointment History</button>
-          <button style={styles.navButton}>Have a URL? Click Here</button>
+          <button onClick={() => navigate("/active-appointment-history")} style={styles.navButton}>Appointment History</button>
+          <button onClick={() => navigate("/book-with-url")} style={styles.navButton}>Have a URL? Click Here</button>
         </div>
         <div style={styles.navRight}>
           <button style={styles.navButton} onClick={() => navigate("/login")}>

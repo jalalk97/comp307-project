@@ -22,7 +22,7 @@ async function getMeeting(req, res) {
   
   const sanitizedUrl = "https://meeting.com" + id;
   console.log(sanitizedUrl);
-  const meeting = await Meeting.findOne({ url: sanitizedUrl }).exec();
+  const meeting = await Meeting.findOne({ url: sanitizedUrl }).populate('host', 'email name').exec();
 
   console.log(meeting);
 
@@ -38,6 +38,7 @@ async function getMeeting(req, res) {
     multiple_people: meeting.multiple_people,
     is_weekly: meeting.is_weekly,
     url: meeting.url,
+    id: meeting._id,
   }; 
 
   const data = {

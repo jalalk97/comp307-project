@@ -1,10 +1,11 @@
 const mongoose = require("mongoose");
-const meetingSchema = require("./meeting");
+
 
 const bookingSchema = new mongoose.Schema ({
     meeting : {
-        type: meetingSchema,
-        require:true
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Meeting',
+        required: true
     },
     //time will be time indicated in meeting
 
@@ -22,7 +23,10 @@ const bookingSchema = new mongoose.Schema ({
     user: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
-        required: true,
+    },
+
+    name: {
+        type:String,
     },
 
     item_borrow: {

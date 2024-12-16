@@ -22,7 +22,7 @@ const Dashboard = () => {
         navigate("/active-appointment-history");
     };
     const goToBookWithURL = () => {
-        navigate("book-with-url");
+        navigate("/book-with-url");
     };
     const goToLogout = () => {
         dispatch(userLoggedOut())
