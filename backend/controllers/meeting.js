@@ -2,18 +2,29 @@ const Meeting = require("../models/meeting");
 
 //function will return a meeting with the required URL
 async function getMeeting(req, res) {
-  const { url } = req.params;
-  if (!url) {
+  const id = req.url;
+  console.log("Request: ", req);
+  console.log("req.url", req.url);
+  console.log("typ of", typeof req.url);
+  console.log("id:", id);
+  
+  if (!id) {
+    console.log("!id");
     return res.status(400).json({ message: "URL is required" });
   }
 
-  if (typeof url !== "string") {
+  if (typeof id !== "string") {
+    console.log("not a string");
     return res.status(400).json({
       message: "Provided URL is not a string",
     });
   }
+  
+  const sanitizedUrl = "https://meeting.com" + id;
+  console.log(sanitizedUrl);
+  const meeting = await Meeting.findOne({ url: sanitizedUrl }).exec();
 
-  const meeting = await Meeting.findOne({ url }).lean().exec();
+  console.log(meeting);
 
   if (!meeting) {
     return res.status(404).json({
@@ -27,13 +38,17 @@ async function getMeeting(req, res) {
     multiple_people: meeting.multiple_people,
     is_weekly: meeting.is_weekly,
     url: meeting.url,
-  };
+  }; 
 
-  res.status(200).json({
-    meeting: meeting_data,
-  });
+  const data = {
+    meeting_data,
+  }
 
-  return;
+  console.log("meeting data:", meeting_data);
+
+  return res.status(200).json(data);
+
+ 
 }
 
 async function createMeeting(req, res) {
