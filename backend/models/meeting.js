@@ -29,6 +29,11 @@ const meetingSchema = new mongoose.Schema({
     url: {
         type:String,
         required:true
+    },
+
+    to_borrow: {
+        type:Boolean,
+        required:false
     }
 
 
