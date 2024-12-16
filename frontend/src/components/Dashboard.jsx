@@ -37,7 +37,7 @@ const Dashboard = () => {
         navigate("/remove-meeting");
     };
     const goToBorrow = () => {
-        navigate("create-borrow-meeting");
+        navigate("/create-borrow-meeting");
     };
     const goToFeedback = () => {
         navigate("/feedback");

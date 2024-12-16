@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useGetMeetingQuery } from "./meetingApiSlice"; // RTK Query mutation
@@ -8,10 +8,15 @@ import { startFetchMeeting, fetchMeeting } from "./meetingSlice";
 const Availability = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    const { meetingdata, loading, error } = useSelector((state) => state.meeting);
+    //const { meetingdata, loading, error } = useSelector((state) => state.meeting);
 
-    const [getAvailability] = useGetMeetingQuery();
+    
     const [urlInput, setUrlInput] = useState("");
+    const [meetingId, setMeetingId] = useState("");
+
+    const { data, error, isLoading } = useGetMeetingQuery(meetingId, {
+      skip: !meetingId, // Prevents query execution until meetingId is set
+    });
 
     const DashboardButtonClick = () => {
         navigate("/Dashboard");
@@ -22,14 +27,24 @@ const Availability = () => {
       navigate("/alternate-meeting");
   };
 
-    const onSubmitButton = async () => {
-      if(!urlInput) {
-        alert("Please enter a valid URL");
-        return;
-      }
+    const onSubmitButton = async (e) => {
+
+      e.preventDefault();
+      const meetingUrl = e.target.elements[0].value.trim();
+      console.log("Meeting URL:", meetingUrl);
+
+
+      const urlSegments = meetingUrl.split("/").filter(Boolean);
+      const id = urlSegments.pop();
+      console.log("Meeting ID:", id);
+
+      setMeetingId(id);
+
+      //console.log("data", data);
+
+      /*
       try {
         dispatch(startFetchMeeting());
-        const { data } = await getAvailability({url : urlInput});
         if(data){
           dispatch(fetchMeeting(data.meeting));
         } else {
@@ -39,7 +54,9 @@ const Availability = () => {
       } catch (err) {
         console.error("Error fetching meeting data", err);
         alert("Failed to get meeting data. Try again.");
-      }
+        
+      }*/
+      
     };
 
 
@@ -183,6 +200,7 @@ const Availability = () => {
       textAlign: 'center',
       fontFamily: 'Arial, sans-serif',
       fontWeight: '400',
+      color: 'black',
     };
   
     return (
@@ -197,16 +215,20 @@ const Availability = () => {
         </div>
         <div style={contentWrapperStyle}>
           <div style={formStyle}>
-            <input
-              type="text"
-              value={urlInput}
-              onChange={(e) => setUrlInput(e.target.value)}
-              placeholder="Enter URL here"
-              style={inputStyle}
-            />
-            <button style={submitStyle} onClick={onSubmitButton}>
-              SUBMIT
-            </button>
+            <form style={{ marginBottom: "20px" } }onSubmit={onSubmitButton}>
+            <label htmlFor="url">
+              <h3>Url of Meeting to check Availability</h3>
+            </label>
+              <input
+                type="text"
+                onChange={(e) => setUrlInput(e.target.value)}
+                placeholder="Enter URL here"
+                style={inputStyle}
+              />
+              <button style={submitStyle} type="submit">
+                SUBMIT
+              </button>
+            </form>
           </div>
           <div style={sectionStyle}>
             <h2 style={titleStyle}>Availability</h2>
@@ -222,12 +244,29 @@ const Availability = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {meetingdata ? (
+                  {isLoading ? (
                     <tr>
-                      <td style={thTdStyle}>{meetingdata.url}</td>
-                      <td style={thTdStyle}>{meetingdata.host}</td>
-                      <td style={thTdStyle}>{meetingdata.dateRange}</td>
-                      <td style={thTdStyle}>{meetingdata.timeRange}</td>
+                      <td style={thTdStyle} colSpan="4">
+                        Loading...
+                      </td>
+                    </tr>
+                  ) : error ? (
+                    <tr>
+                      <td style={thTdStyle} colSpan="4">
+                        {error?.data?.message || "Error fetching meeting data"}
+                      </td>
+                    </tr>
+                  ) : data && data.meeting_data ? (
+                    <tr>
+                      <td style={thTdStyle}>{data.meeting_data.url}</td>
+                      <td style={thTdStyle}>{data.meeting_data.host}</td>
+                      <td style={thTdStyle}>
+                        {new Date(data.meeting_data.dateRange.startDate).toLocaleDateString()} to{" "}
+                        {new Date(data.meeting_data.dateRange.endDate).toLocaleDateString()}
+                      </td>
+                      <td style={thTdStyle}>
+                        {data.meeting_data.timeRange.startTime} to {data.meeting_data.timeRange.endTime}
+                      </td>
                     </tr>
                   ) : (
                     <tr>
