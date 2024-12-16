@@ -9,7 +9,7 @@ import { useCreateMeetingMutation } from "../features/meeting/meetingApiSlice";
 
 const API_URL = "http://localhost:4000";
 
-const CreateBorrowMeeting = () => {
+const CreateMeeting = () => {
   const navigate = useNavigate();
 
   const currentUser = useSelector(selectCurrentUser);
@@ -304,4 +304,4 @@ const styles = {
   },
 };
 
-export default CreateBorrowMeeting;
+export default CreateMeeting;

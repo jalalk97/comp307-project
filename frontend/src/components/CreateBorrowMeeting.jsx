@@ -6,7 +6,7 @@ import { FaRegCircleUser } from "react-icons/fa6";
 import { useSelector } from "react-redux";
 import { selectCurrentUser } from "../features/auth/authSlice";
 
-const CreateMeeting = () => {
+const CreateBorrowMeeting = () => {
   const navigate = useNavigate();
   const currentUser = useSelector(selectCurrentUser);
 
@@ -334,4 +334,4 @@ const styles = {
   },
 };
 
-export default CreateMeeting;
+export default CreateBorrowMeeting;
