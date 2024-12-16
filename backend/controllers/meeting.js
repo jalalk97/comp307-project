@@ -146,7 +146,65 @@ async function removeMeeting(req, res) {
   }
 }
 
+async function getAvailability(req, res) {
+  const id = req.url.replace('/availability', '');
+  console.log("Request: ", req);
+  console.log("req.url", req.url);
+  console.log("typ of", typeof req.url);
+  console.log("id:", id);
+  
+  if (!id) {
+    console.log("!id");
+    return res.status(400).json({ message: "URL is required" });
+  }
+
+  if (typeof id !== "string") {
+    console.log("not a string");
+    return res.status(400).json({
+      message: "Provided URL is not a string",
+    });
+  }
+  
+  const sanitizedUrl = "https://meeting.com" + id;
+  console.log(sanitizedUrl);
+  const curr_meeting = await Meeting.findOne({ url: sanitizedUrl }).exec();
+
+  const curr_host = curr_meeting.host;
+
+  console.log(curr_host);
+
+  const meetings = await Meeting.find({ host: curr_host }).populate('host', 'name email').exec();
+
+  console.log("Meetings by Host:", meetings);
+
+  if (!meetings || meetings.length === 0) {
+    console.log("No meetings found for the host");
+    return res.status(404).json({ message: "No meetings found for the host" });
+  }
+
+
+  const meeting_data = meetings.map(meeting => ({
+      dateRange: meeting.dateRange,
+      timeRange: meeting.timeRange,
+      host: meeting.host,
+      multiple_people: meeting.multiple_people,
+      is_weekly: meeting.is_weekly,
+      url: meeting.url,
+  }));
+
+  const data = {
+    meeting_data,
+  }
+
+  console.log("meeting data:", meeting_data);
+
+  return res.status(200).json(data);
+
+ 
+}
+
 module.exports = {
+  getAvailability,
   getMeeting,
   createMeeting,
   updateMeeting,
