@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { useGetMeetingQuery } from "./meetingApiSlice"; // RTK Query mutation
+import { useGetAvailabilityQuery } from "./meetingApiSlice"; // RTK Query mutation
 import { startFetchMeeting, fetchMeeting } from "./meetingSlice";
 
 
@@ -14,7 +14,7 @@ const Availability = () => {
     const [urlInput, setUrlInput] = useState("");
     const [meetingId, setMeetingId] = useState("");
 
-    const { data, error, isLoading } = useGetMeetingQuery(meetingId, {
+    const { data, error, isLoading } = useGetAvailabilityQuery(meetingId, {
       skip: !meetingId, // Prevents query execution until meetingId is set
     });
 
@@ -214,11 +214,8 @@ const Availability = () => {
           <button onClick={RequestAltButtonClick} style={buttonStyle}>Alternate Meeting</button>
         </div>
         <div style={contentWrapperStyle}>
-          <div style={formStyle}>
-            <form style={{ marginBottom: "20px" } }onSubmit={onSubmitButton}>
-            <label htmlFor="url">
-              <h3>Url of Meeting to check Availability</h3>
-            </label>
+          <h3>Url of Meeting to check Hosts availability</h3>
+            <form style={formStyle} onSubmit={onSubmitButton}>
               <input
                 type="text"
                 onChange={(e) => setUrlInput(e.target.value)}
@@ -229,7 +226,6 @@ const Availability = () => {
                 SUBMIT
               </button>
             </form>
-          </div>
           <div style={sectionStyle}>
             <h2 style={titleStyle}>Availability</h2>
             <p style={captionStyle}>Check the available time slots below:</p>
@@ -243,12 +239,10 @@ const Availability = () => {
                     <th style={thTdStyle}>Time</th>
                   </tr>
                 </thead>
-                <tbody>
+                  <tbody>
                   {isLoading ? (
                     <tr>
-                      <td style={thTdStyle} colSpan="4">
-                        Loading...
-                      </td>
+                      <td style={thTdStyle} colSpan="4">Loading...</td>
                     </tr>
                   ) : error ? (
                     <tr>
@@ -256,23 +250,27 @@ const Availability = () => {
                         {error?.data?.message || "Error fetching meeting data"}
                       </td>
                     </tr>
-                  ) : data && data.meeting_data ? (
-                    <tr>
-                      <td style={thTdStyle}>{data.meeting_data.url}</td>
-                      <td style={thTdStyle}>{data.meeting_data.host}</td>
-                      <td style={thTdStyle}>
-                        {new Date(data.meeting_data.dateRange.startDate).toLocaleDateString()} to{" "}
-                        {new Date(data.meeting_data.dateRange.endDate).toLocaleDateString()}
-                      </td>
-                      <td style={thTdStyle}>
-                        {data.meeting_data.timeRange.startTime} to {data.meeting_data.timeRange.endTime}
-                      </td>
-                    </tr>
+                  ) : data && data.meeting_data && data.meeting_data.length > 0 ? (
+                    data.meeting_data.map((meeting) => (
+                      <tr key={meeting._id}>
+                        <td style={thTdStyle}>
+                          <a href={meeting.url} target="_blank" rel="noopener noreferrer">
+                            {meeting.url}
+                          </a>
+                        </td>
+                        <td style={thTdStyle}>{meeting.host.email}</td>
+                        <td style={thTdStyle}>
+                          {new Date(meeting.dateRange.startDate).toLocaleDateString()} to{" "}
+                          {new Date(meeting.dateRange.endDate).toLocaleDateString()}
+                        </td>
+                        <td style={thTdStyle}>
+                          {meeting.timeRange.startTime} to {meeting.timeRange.endTime}
+                        </td>
+                      </tr>
+                    ))
                   ) : (
                     <tr>
-                      <td style={thTdStyle} colSpan="4">
-                        No meeting data available
-                      </td>
+                      <td style={thTdStyle} colSpan="4">No meeting data available</td>
                     </tr>
                   )}
                 </tbody>
