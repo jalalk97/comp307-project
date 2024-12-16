@@ -5,11 +5,18 @@ import Home from "../assests/photo.jpg";
 import { FaRegCircleUser } from "react-icons/fa6";
 import { useSelector } from "react-redux";
 import { selectCurrentUser } from "../features/auth/authSlice";
+import { useCreateMeetingMutation } from "../features/meeting/meetingApiSlice";
+
+const API_URL = "http://localhost:4000";
 
 const CreateBorrowMeeting = () => {
   const navigate = useNavigate();
 
   const currentUser = useSelector(selectCurrentUser);
+
+  const [createMeeting] = useCreateMeetingMutation();
+
+  const [generatedURL, setGeneratedURL] = useState(null);
 
   const [formData, setFormData] = useState({
     bookingName: "",
@@ -20,8 +27,6 @@ const CreateBorrowMeeting = () => {
     endTime: "",
     bookingType: "",
   });
-
-  const [generatedURL, setGeneratedURL] = useState("");
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -43,8 +48,7 @@ const CreateBorrowMeeting = () => {
   });
 
   const handleSubmit = async () => {
-    const randomURL = `https://meeting.com/${Math.random().toString(36).substr(2, 9)}`;
-    setGeneratedURL(randomURL);
+    setGeneratedURL("");
 
     const meetingData = {
       bookingName: formData.bookingName,
@@ -58,22 +62,15 @@ const CreateBorrowMeeting = () => {
         endTime: formData.endTime,
       },
       bookingType: formData.bookingType,
-      url: randomURL,
       host: currentUser.id,
     };
 
     try {
-      const response = await fetch("http://localhost:4000/meeting", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(meetingData),
-      });
-
-      const data = await response.json();
-      console.log("Meeting created:", data);
-      setGeneratedURL(data.bookingUrl); // Set the URL after creation
+      const meeting = await createMeeting(meetingData);
+      if (meeting) {
+        console.log("Meeting created:", meeting);
+        setGeneratedURL(`${API_URL}/meeting/${meeting.data.id}`);
+      }
     } catch (error) {
       console.error("Error creating meeting:", error);
     }

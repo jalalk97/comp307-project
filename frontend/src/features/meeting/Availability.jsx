@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { useGetAvailabilityMutation } from "./meetingApiSlice"; // RTK Query mutation
+import { useGetMeetingQuery } from "./meetingApiSlice"; // RTK Query mutation
 import { startFetchMeeting, fetchMeeting } from "./meetingSlice";
 
 
@@ -10,7 +10,7 @@ const Availability = () => {
     const dispatch = useDispatch();
     const { meetingdata, loading, error } = useSelector((state) => state.meeting);
 
-    const [getAvailability] = useGetAvailabilityMutation();
+    const [getAvailability] = useGetMeetingQuery();
     const [urlInput, setUrlInput] = useState("");
 
     const DashboardButtonClick = () => {

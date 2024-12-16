@@ -31,10 +31,10 @@ const Dashboard = () => {
         navigate("/");
     };
     const goToCreateMeeting = () => {
-        navigate("/CreateMeeting");
+        navigate("/create-meeting");
     };
     const goToRemoveMeeting = () => {
-        navigate("/RemoveMeeting");
+        navigate("/remove-meeting");
     };
     const goToCreatePoll = () => {
         navigate("/CreatePoll");

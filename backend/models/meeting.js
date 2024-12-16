@@ -26,20 +26,23 @@ const meetingSchema = new mongoose.Schema({
         type:Boolean,
         required:true
     },
-    url: {
-        type:String,
-        required:true
-    },
 
     to_borrow: {
         type:Boolean,
         required:false
-    }
+    },
 
 
+    url: String,
 })
 
-
+meetingSchema.set("toJSON", {
+  transform: (_document, returnedObject) => {
+    returnedObject.id = returnedObject._id.toString();
+    delete returnedObject._id;
+    delete returnedObject.__v;
+  },
+});
 
 
 const Meeting = mongoose.model("Meeting", meetingSchema);
