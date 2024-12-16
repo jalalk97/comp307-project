@@ -7,7 +7,7 @@ import FeedbackPage from "./components/Feedback";
 import Dashboard from "./components/Dashboard";
 import CreateMeeting from "./components/CreateMeeting";
 import AlternateMeeting from "./components/AlternateMeeting";
-import RemoveMeeting from "./components/removeMeeting";
+import RemoveMeeting from "./components/RemoveMeeting";
 import Availability from "./features/meeting/Availability";
 
 function App() {
@@ -19,11 +19,11 @@ function App() {
         <Route path="login" element={<LoginPage />} />
         <Route path="register" element={<RegisterPage />} />
         <Route path="feedback" element={<FeedbackPage />} />
-        <Route path="Dashboard" element={<Dashboard />} />
+        <Route path="dashboard" element={<Dashboard />} />
         <Route path="create-meeting" element={<CreateMeeting />} />
         <Route path="alternate-meeting" element={<AlternateMeeting />} />
         <Route path="availability" element={<Availability />} />
-        <Route path="removeMeeting" element={<RemoveMeeting />} />
+        <Route path="remove-meeting" element={<RemoveMeeting />} />
       </Route>
     </Routes>
   );

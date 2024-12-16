@@ -38,20 +38,12 @@ async function getMeeting(req, res) {
 
 async function createMeeting(req, res) {
   try {
-    const { dateRange, timeRange, host, multiple_people, is_weekly, url } =
-      req.body;
+    const { dateRange, timeRange, host, multiple_people, is_weekly } = req.body;
 
-    console.log({ dateRange, timeRange, host, url });
-    if (!dateRange || !timeRange || !host || !url) {
+    console.log({ dateRange, timeRange, host });
+    if (!dateRange || !timeRange || !host) {
       return res.status(400).json({
-        message: "Missing required fields: dateRange, timeRange, host, or url.",
-      });
-    }
-
-    const existingMeeting = await Meeting.findOne({ url }).lean().exec();
-    if (existingMeeting) {
-      return res.status(409).json({
-        message: "A meeting with this URL already exists.",
+        message: "Missing required fields: dateRange, timeRange or host.",
       });
     }
 
@@ -61,22 +53,11 @@ async function createMeeting(req, res) {
       host,
       multiple_people: multiple_people || false,
       is_weekly: is_weekly || false,
-      url,
     });
 
     await newMeeting.save();
 
-    res.status(201).json({
-      message: "Meeting created successfully",
-      meeting: {
-        dateRange: newMeeting.dateRange,
-        timeRange: newMeeting.timeRange,
-        host: newMeeting.host,
-        multiple_people: newMeeting.multiple_people,
-        is_weekly: newMeeting.is_weekly,
-        url: newMeeting.url,
-      },
-    });
+    res.status(201).json(newMeeting);
   } catch (error) {
     console.error("Error creating meeting:", error);
     res.status(500).json({ message: "Internal server error" });
@@ -114,8 +95,45 @@ async function updateMeeting(req, res) {
   }
 }
 
+async function removeMeeting(req, res) {
+  try {
+    const { user } = req;
+
+    if (!user) {
+      return res
+        .status(401)
+        .json({ messagee: "You must be logged in to remove a meeting" });
+    }
+
+    const { id } = req.params;
+
+    const meeting = await Meeting.findById(id).exec();
+    console.log(meeting);
+
+    if (!meeting) {
+      return res.status(404).json({ message: "Meeting not found" });
+    }
+
+    if (meeting.host.toString() !== user._id.toString()) {
+      return res
+        .status(403)
+        .json({ messagee: "You cannot remove someone else's meeting" });
+    }
+
+    await meeting.deleteOne();
+
+    return res
+      .status(200)
+      .json({ message: "The meeting was successfully removed" });
+  } catch (err) {
+    console.error("Error deleting meeting:", err);
+    res.status(500).json({ message: "Internal server error" });
+  }
+}
+
 module.exports = {
   getMeeting,
   createMeeting,
   updateMeeting,
+  removeMeeting,
 };

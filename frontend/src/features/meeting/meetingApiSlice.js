@@ -1,14 +1,33 @@
 import { apiSlice } from "../api/apiSlice";
 
 export const meetingApiSlice = apiSlice.injectEndpoints({
-    endpoints: (builder) => ({
-        getMeeting: builder.mutation({
-            query:(urlParam) => ({
-                url: `/meeting?${new URLSearchParams(urlParam)}`,
-                method: 'GET',
-            })
-        })
+  endpoints: (builder) => ({
+    getMeeting: builder.query({
+      query: (id) => ({
+        url: `/meeting/${id}`,
+        method: "GET",
+      }),
     }),
+    createMeeting: builder.mutation({
+      query: (meeting) => ({
+        url: "/meeting",
+        method: "POST",
+        body: {
+          ...meeting,
+        },
+      }),
+    }),
+    removeMeeting: builder.mutation({
+      query: (id) => ({
+        url: `/meeting/${id}`,
+        method: "DELETE",
+      }),
+    }),
+  }),
 });
 
-export const { useGetMeetingMutation } = meetingApiSlice;
+export const {
+  useGetMeetingQuery,
+  useCreateMeetingMutation,
+  useRemoveMeetingMutation,
+} = meetingApiSlice;

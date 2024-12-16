@@ -1,16 +1,24 @@
-import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { useRemoveMeetingMutation } from "../features/meeting/meetingApiSlice";
 
 const RemoveMeeting = () => {
   const navigate = useNavigate();
-  const urlInput = "";
+  const [urlInput, setUrlInput] = useState("");
+  const [removeMeeting, { isLoading }] = useRemoveMeetingMutation();
 
-  const handleDashboardButton = () => {
-    navigate("/Dashboard");
-  };
-
-  const handleDeleteButton = async () => {
-    //TODO valueInput
-    return;
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const { elements } = e.currentTarget;
+    const meetingUrl = elements.url.value;
+    const meetingId = meetingUrl.split("/").filter(Boolean).pop();
+    try {
+      await removeMeeting(meetingId);
+      console.log(`Meeting ${meetingId} removed`);
+      navigate("/Dashboard");
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   return (
@@ -20,9 +28,9 @@ const RemoveMeeting = () => {
           <img src="/logo2.png" alt="logo" width={150} height={100} />
         </div>
         <div>
-          <button onClick={handleDashboardButton} style={styles.backButton}>
+          <Link to="/dashboard" style={styles.backButton}>
             Back to Dashboard
-          </button>
+          </Link>
         </div>
       </nav>
 
@@ -30,9 +38,13 @@ const RemoveMeeting = () => {
         <div style={styles.leftPanel}>
           <h1 style={{ marginBottom: "20px" }}>Remove Meeting</h1>
 
-          <div style={{ marginBottom: "20px" }}>
-            <h3>Url of Meeting to Remove</h3>
+          <form style={{ marginBottom: "20px" }} onSubmit={handleSubmit}>
+            <label htmlFor="url">
+              <h3>Url of Meeting to Remove</h3>
+            </label>
             <input
+              id="url"
+              name="url"
               style={{
                 value: { urlInput },
                 display: "block",
@@ -43,15 +55,19 @@ const RemoveMeeting = () => {
                 borderRadius: "4px",
               }}
               placeholder="Enter the meeting URL"
+              onChange={(e) => setUrlInput(e.target.value)}
             />
             <p style={{ marginTop: "10px", fontSize: "14px", color: "#333" }}>
               Note, you must be the host to delete a meeting
             </p>
-          </div>
-
-          <button onClick={handleDashboardButton} style={styles.removeButton}>
-            Remove
-          </button>
+            <button
+              type="submit"
+              style={styles.removeButton}
+              disabled={isLoading}
+            >
+              Remove
+            </button>
+          </form>
         </div>
 
         <div style={styles.rightPanel}>
@@ -88,6 +104,7 @@ const styles = {
     cursor: "pointer",
     fontWeight: "bold",
     borderRadius: "4px",
+    textDecoration: "none",
   },
   container: {
     display: "flex",
