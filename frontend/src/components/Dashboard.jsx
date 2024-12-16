@@ -19,10 +19,10 @@ const Dashboard = () => {
         navigate("/alternate-meeting");
     };
     const goToActiveAppointmentAndHistory = () => {
-        navigate("/ActiveAppointmentsAndHistory");
+        navigate("/active-appointment-history");
     };
     const goToBookWithURL = () => {
-        navigate("/BookWithURL");
+        navigate("book-with-url");
     };
     const goToLogout = () => {
         dispatch(userLoggedOut())
@@ -36,14 +36,14 @@ const Dashboard = () => {
     const goToRemoveMeeting = () => {
         navigate("/remove-meeting");
     };
-    const goToCreatePoll = () => {
-        navigate("/CreatePoll");
+    const goToBorrow = () => {
+        navigate("create-borrow-meeting");
     };
     const goToFeedback = () => {
-        navigate("/Feedback");
+        navigate("/feedback");
     };
     const goToAvailability = () => {
-        navigate("/Availability");
+        navigate("/availability");
     };
     return (
         <div className="body">
@@ -67,17 +67,12 @@ const Dashboard = () => {
             {/*need to add user name*/}
             <h2 style={{ marginTop: "5vw" }}>{`Welcome Back ${currentUser?.name ?? ""}!`}</h2>
             <div className="grid-container">
-              <div className="grid-item" onClick={goToCreateMeeting}>
-                Create a Meeting
-              </div>
-              <div className="grid-item" onClick={goToRemoveMeeting}>
-                Remove a Meeting
-              </div>
-              <div className="grid-item" onClick={goToCreatePoll}>Create Poll</div>
+              <div className="grid-item" onClick={goToCreateMeeting}>Create a Meeting</div>
+              <div className="grid-item" onClick={goToRemoveMeeting}>Remove a Meeting</div>
+              <div className="grid-item" onClick={goToBorrow}>Create Borrow an Item</div>
               <div className="grid-item" onClick={goToFeedback}>Feedback</div>
-              <div className="grid-item" onClick={goToAvailability}>
-                Availability
-              </div>
+              <div className="grid-item" onClick={goToAvailability}>Availability</div>
+              <div className="grid-item" onClick={goToLanding}>Landing</div>
             </div>
           </main>
         </div>
