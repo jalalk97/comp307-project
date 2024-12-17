@@ -1,32 +1,28 @@
-import React from "react";
 import { useNavigate } from "react-router-dom"; // Import useNavigate for navigation
+import AuthButtons from "./AuthButtons";
 
 const Landing = () => {
   const navigate = useNavigate(); // Initialize navigation
-
-  const goToBookWithURL= () => {
-
-  }
-
-  const appointmentHistoryL= () => {
-
-  }
-
 
   return (
     <div style={styles.page}>
       {/* Navbar */}
       <nav style={styles.navbar}>
         <div style={styles.navLeft}>
-          <button onClick={() => navigate("/active-appointment-history")} style={styles.navButton}>Appointment History</button>
-          <button onClick={() => navigate("/book-with-url")} style={styles.navButton}>Have a URL? Click Here</button>
-        </div>
-        <div style={styles.navRight}>
-          <button style={styles.navButton} onClick={() => navigate("/login")}>
-            Login
+          <button
+            onClick={() => navigate("/active-appointment-history")}
+            style={styles.navButton}
+          >
+            Appointment History
           </button>
-          <button style={styles.navButton} onClick={() => navigate("/register")}>Register</button>
+          <button
+            onClick={() => navigate("/book-with-url")}
+            style={styles.navButton}
+          >
+            Have a URL? Click Here
+          </button>
         </div>
+        <AuthButtons />
       </nav>
 
       {/* Hero Section */}
@@ -49,10 +45,11 @@ const Landing = () => {
             We are a specialized booking platform that enables Computer Science
             students to seamlessly schedule appointments with their professors
             and teaching assistants. Our platform aims to simplify the academic
-            support process by offering streamlined booking features, appointment
-            history tracking, and easy integration with course resources. We
-            strive to enhance the learning experience by making it more
-            accessible, organized, and efficient for both students and staff.
+            support process by offering streamlined booking features,
+            appointment history tracking, and easy integration with course
+            resources. We strive to enhance the learning experience by making it
+            more accessible, organized, and efficient for both students and
+            staff.
           </p>
         </div>
       </section>
@@ -114,6 +111,7 @@ const styles = {
     cursor: "pointer",
     fontWeight: "bold",
     fontSize: "14px",
+    textDecoration: "none",
   },
   hero: {
     position: "relative",
