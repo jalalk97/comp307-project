@@ -18,9 +18,14 @@ const AuthButtons = () => {
   return (
     <div style={styles.navRight}>
       {token ? (
-        <button style={styles.navButton} onClick={handleLogout}>
-          Logout
-        </button>
+        <>
+          <Link to="/dashboard" style={styles.navButton}>
+            Dashboard
+          </Link>
+          <button style={styles.navButton} onClick={handleLogout}>
+            Logout
+          </button>
+        </>
       ) : (
         <>
           <Link to="/login" style={styles.navButton}>
