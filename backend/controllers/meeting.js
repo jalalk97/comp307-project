@@ -2,10 +2,7 @@ const Meeting = require("../models/meeting");
 
 //function will return a meeting with the required URL
 async function getMeeting(req, res) {
-  const id = req.url;
-  console.log("Request: ", req);
-  console.log("req.url", req.url);
-  console.log("typ of", typeof req.url);
+  const id = req.params.url;
   console.log("id:", id);
   
   if (!id) {
@@ -20,9 +17,7 @@ async function getMeeting(req, res) {
     });
   }
   
-  const sanitizedUrl = "https://meeting.com" + id;
-  console.log(sanitizedUrl);
-  const meeting = await Meeting.findOne({ url: sanitizedUrl }).populate('host', 'email name').exec();
+  const meeting = await Meeting.findById(id).populate('host', 'email name').exec();
 
   console.log(meeting);
 
@@ -148,10 +143,7 @@ async function removeMeeting(req, res) {
 }
 
 async function getAvailability(req, res) {
-  const id = req.url.replace('/availability', '');
-  console.log("Request: ", req);
-  console.log("req.url", req.url);
-  console.log("typ of", typeof req.url);
+  const id = req.params.url;
   console.log("id:", id);
   
   if (!id) {
@@ -166,8 +158,7 @@ async function getAvailability(req, res) {
     });
   }
   
-  const sanitizedUrl = "https://comp307-project-ibhi.onrender.com/" + id;
-  console.log(sanitizedUrl);
+
   const curr_meeting = await Meeting.findById(id).exec();
 
   const curr_host = curr_meeting.host;
