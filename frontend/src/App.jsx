@@ -10,9 +10,9 @@ import AlternateMeeting from "./components/AlternateMeeting";
 import RemoveMeeting from "./components/RemoveMeeting";
 import Availability from "./features/meeting/Availability";
 import CreateBorrowMeeting from "./components/CreateBorrowMeeting";
-import ActiveAppointmentsAndHistory from "./components/ActiveAppointmentsAndHistory"; 
+import ActiveAppointmentsAndHistory from "./components/ActiveAppointmentsAndHistory";
 import BookWithURL from "./features/booking/BookWithURL";
-
+import ProtectedRoute from "../utils/ProtectedRoute";
 
 function App() {
   //for testing purposes leave as is. Will implement protected routes later
@@ -22,14 +22,59 @@ function App() {
         <Route index element={<Landing />} />
         <Route path="login" element={<LoginPage />} />
         <Route path="register" element={<RegisterPage />} />
-        <Route path="feedback" element={<FeedbackPage />} />
-        <Route path="dashboard" element={<Dashboard />} />
-        <Route path="create-meeting" element={<CreateMeeting />} />
+        <Route
+          path="feedback"
+          element={
+            <ProtectedRoute>
+              <FeedbackPage />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="dashboard"
+          element={
+            <ProtectedRoute>
+              <Dashboard />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="create-meeting"
+          element={
+            <ProtectedRoute>
+              <CreateMeeting />
+            </ProtectedRoute>
+          }
+        />
         <Route path="alternate-meeting" element={<AlternateMeeting />} />
-        <Route path="availability" element={<Availability />} />
-        <Route path="create-borrow-meeting" element={<CreateBorrowMeeting />} />
-        <Route path="remove-meeting" element={<RemoveMeeting />} />
-        <Route path="active-appointment-history" element={<ActiveAppointmentsAndHistory />} />
+        <Route
+          path="availability"
+          element={
+            <ProtectedRoute>
+              <Availability />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="create-borrow-meeting"
+          element={
+            <ProtectedRoute>
+              <CreateBorrowMeeting />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="remove-meeting"
+          element={
+            <ProtectedRoute>
+              <RemoveMeeting />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="active-appointment-history"
+          element={<ActiveAppointmentsAndHistory />}
+        />
         <Route path="book-with-url" element={<BookWithURL />} />
       </Route>
     </Routes>
