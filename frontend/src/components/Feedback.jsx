@@ -1,9 +1,12 @@
 import React from "react";
 import { useNavigate  } from "react-router-dom";
 import './css/Feedback.css';
+import { useCreateFeedbackMutation } from "../features/feedback/feedbackApiSlice";
 
 const Feedback = () => {
     const navigate = useNavigate();
+
+    const [createFeedback] = useCreateFeedbackMutation();
 
     //navigate back to Dashboard
     const handleDashboardButton = () => {
@@ -27,15 +30,16 @@ const Feedback = () => {
         console.log(payload);
         //fetch backend and check if data was successfully submitted
         try{
-            const response = await fetch(`http://localhost:4000/feedback`, {
-                method: "POST",
-                headers: {"Content-Type" : "application/json"},
-                body: JSON.stringify(payload)
-            });
-    
+            await createFeedback(payload);
+    //         const response = await fetch(`http://localhost:4000/feedback`, {
+    //             method: "POST",
+    //             headers: {"Content-Type" : "application/json"},
+    //             body: JSON.stringify(payload)
+    //         });
+    // 
 
-            if(!response.ok){
-                throw new Error(`Error: ${response.statusText}`);}
+    //         if(!response.ok){
+    //             throw new Error(`Error: ${response.statusText}`);}
             
             console.log("feedback successfully submitted");
             navigate("/Dashboard");
