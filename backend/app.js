@@ -17,10 +17,11 @@ connectDB();
 app.use(
   logger("common", {
     stream: fs.createWriteStream(`${logDir}/access.log`, { flags: "a" }),
-  })
+  }),
 );
 app.use(logger("dev"));
 app.use(cors());
+app.use(express.static("dist"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 

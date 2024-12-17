@@ -18,7 +18,8 @@ async function login(req, res) {
   }
 
   const user = await User.findOne({ email }).lean().exec();
-  const isPasswordCorrect = user && await bcrypt.compare(password, user.password);
+  const isPasswordCorrect =
+    user && (await bcrypt.compare(password, user.password));
 
   if (!user || !isPasswordCorrect) {
     return res.status(401).json({
@@ -32,7 +33,11 @@ async function login(req, res) {
     id: user._id,
   };
 
-  const token = jwt.sign(userForToken, process.env.JWT_SECRET);
+  const token = jwt.sign(
+    userForToken,
+    process.env.JWT_SECRET ||
+      "b48636224ec98905f2d932a8196807792ab4a12d114af3e227d830a64d658acd27fea7745d25638d9dc6b0a1fc3270c5d2e9b9894a871777cf957be1e6f2e497",
+  );
 
   res.status(200).json({
     token,
@@ -40,12 +45,7 @@ async function login(req, res) {
   });
 }
 
-function logout(req, res) {
-
-}
-
 module.exports = {
   register,
   login,
-  logout,
 };
