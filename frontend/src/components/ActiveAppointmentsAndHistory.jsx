@@ -1,190 +1,217 @@
 import React from "react";
 import Logo from "../assests/logo2.png";
 import { useNavigate } from "react-router-dom";
-
+import { useGetAllMeetingsQuery } from "../features/meeting/meetingApiSlice";
 
 const ActiveAppointmentsAndHistory = () => {
-  const navigate = useNavigate(); 
-  
+  const navigate = useNavigate();
+  const { data, error, isLoading } = useGetAllMeetingsQuery();
+
+  // Add debugging logs
+  console.log('Query Response:', { data, error, isLoading });
+
   const containerStyle = {
-    fontFamily: "Arial, sans-serif",
-    color: "#333",
-    backgroundColor: "#fff",
-    display: "flex",
-    flexDirection: "column",
-    minHeight: "100vh",
-};
+    fontFamily: 'Arial, sans-serif',
+    textAlign: 'center',
+    backgroundColor: '#fff',
+    minHeight: '100vh',
+    margin: '0',
+    padding: '0',
+    boxSizing: 'border-box',
+    position: 'relative',
+  };
 
-const headerStyle = {
-    backgroundColor: "#c00000",
-    color: "#fff",
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "center",
-    padding: "10px 20px",
-};
+  const headerStyle = {
+    backgroundColor: '#990000',
+    color: '#fff',
+    padding: '0',
+    fontSize: '2vw',
+    fontWeight: 'bold',
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    fontFamily: 'Helvetica, sans-serif',
+    width: '100%',
+    position: 'fixed',
+    top: '0',
+    left: '0',
+    zIndex: 3,
+  };
 
-const logoStyle = {
-    width: "150px",
-    height: "120px",
-};
+  const buttonStyle = {
+    backgroundColor: 'transparent',
+    border: '0.2vw solid #fff',
+    color: '#fff',
+    padding: '1.3vw 3vw',
+    borderRadius: '1vw',
+    cursor: 'pointer',
+    fontSize: '1.2vw',
+    fontWeight: 'bold',
+    fontFamily: 'Helvetica, sans-serif',
+    margin: '3vw',
+  };
 
-const homeButtonStyle = {
-    backgroundColor: "#fff",
-    color: "#c00000",
-    border: "2px solid #fff",
-    padding: "8px 20px",
-    fontSize: "1rem",
-    fontWeight: "bold",
-    cursor: "pointer",
-    borderRadius: "5px",
-};
+  const imgContainerStyle = {
+    width: '10vw',
+    height: '8vw',
+    margin: '0vw 0vw 0vw 3vw',
+    display: 'block',
+  };
 
-const sectionStyle = {
-    margin: "20px",
-    textAlign: "center",
-};
+  const contentWrapperStyle = {
+    position: 'relative',
+    zIndex: 1,
+    padding: '10vw 5vw',
+    marginTop: '8vw',
+  };
 
-const sectionTitleStyle = {
-    backgroundColor: "#e0e0e0",
-    color: "#333",
-    fontWeight: "bold",
-    padding: "10px",
-    borderRadius: "5px",
-    display: "inline-block",
-    marginBottom: "10px",
-    fontSize: "1.2rem",
-};
+  const tableWrapperStyle = {
+    backgroundColor: '#fff',
+    padding: '2vw',
+    borderRadius: '0.5vw',
+    boxShadow: '0 0.5vw 1vw rgba(0, 0, 0, 0.1)',
+    margin: '2vw auto',
+    width: '80%',
+  };
 
-const tableContainerStyle = {
-    backgroundColor: "#c0c0c0",
-    borderRadius: "5px",
-    overflow: "hidden",
-    margin: "0 auto",
-    width: "90%",
-};
+  const tableStyle = {
+    borderCollapse: 'collapse',
+    width: '100%',
+  };
 
-const tableStyle = {
-    width: "100%",
-    borderCollapse: "collapse",
-    backgroundColor: "#918e8e",
-};
+  const thTdStyle = {
+    border: '0.2vw solid #ccc',
+    padding: '1vw',
+    fontSize: '1.2vw',
+    textAlign: 'center',
+    fontFamily: 'Arial, sans-serif',
+    fontWeight: '400',
+    color: 'black',
+  };
 
-const thTdStyle = {
-    border: "1px solid #ccc",
-    padding: "10px",
-    textAlign: "center",
-};
+  const titleStyle = {
+    fontFamily: 'Helvetica, sans-serif',
+    fontWeight: 'bold',
+    fontSize: '2vw',
+    color: '#990000',
+    marginBottom: '1vw',
+  };
 
-const footerStyle = {
-    backgroundColor: "#000",
-    color: "#fff",
-    padding: "20px",
-    textAlign: "center",
-    marginTop: "auto",
-};
+  const handleDashboardClick = () => {
+    navigate('/');
+  };
 
-const footerLinksStyle = {
-    display: "flex",
-    justifyContent: "center",
-    gap: "20px",
-    flexWrap: "wrap",
-    fontSize: "0.9rem",
-};
+  const currentDate = new Date();
+  const activeAppointments = data?.meetings?.filter(meeting => 
+    new Date(meeting.dateRange.endDate) >= currentDate
+  ) || [];
+  const historyAppointments = data?.meetings?.filter(meeting => 
+    new Date(meeting.dateRange.endDate) < currentDate
+  ) || [];
 
-return (
+
+  console.log('Filtered Appointments:', { activeAppointments, historyAppointments });
+
+  return (
     <div style={containerStyle}>
-        {/* Header */}
+      <header style={headerStyle}>
+        <img style={imgContainerStyle} src={Logo} alt="Logo" />
+        <button onClick={handleDashboardClick} style={buttonStyle}>
+          Back
+        </button>
+      </header>
 
-        
-        <header style={headerStyle}>
-            <div style={logoStyle}>
-            <img src="logo2.png" alt="Logo" width={"150px"} height={"120px"}/>
-            </div>
-            <button style={homeButtonStyle}>Home</button>
-        </header>
+      <div style={contentWrapperStyle}>
+        {isLoading && <p>Loading meetings...</p>}
+        {error && (
+          <div style={{ color: 'red', padding: '20px' }}>
+            <h3>Error loading meetings</h3>
+            <pre>{JSON.stringify(error, null, 2)}</pre>
+          </div>
+        )}
 
-        {/* Active Appointments */}
-        <div style={sectionStyle}>
-            <div style={sectionTitleStyle}>Active Appointments</div>
-            <div style={tableContainerStyle}>
+        {!isLoading && !error && data?.meetings?.length === 0 && (
+          <p>No meetings found</p>
+        )}
+
+        {!isLoading && !error && data?.meetings?.length > 0 && (
+          <>
+            <div style={tableWrapperStyle}>
+              <h2 style={titleStyle}>Active Appointments ({activeAppointments.length})</h2>
+              {activeAppointments.length === 0 ? (
+                <p>No active appointments</p>
+              ) : (
                 <table style={tableStyle}>
-                    <thead>
-                        <tr>
-                            <th style={thTdStyle}>URL</th>
-                            <th style={thTdStyle}>Host</th>
-                            <th style={thTdStyle}>Start Date</th>
-                            <th style={thTdStyle}>End Date</th>
-                            <th style={thTdStyle}>Borrowed Item</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td style={thTdStyle}>Data</td>
-                            <td style={thTdStyle}>Data</td>
-                            <td style={thTdStyle}>Data</td>
-                            <td style={thTdStyle}>Data</td>
-                            <td style={thTdStyle}>Data</td>
-                        </tr>
-                        <tr>
-                            <td style={thTdStyle}>Data</td>
-                            <td style={thTdStyle}>Data</td>
-                            <td style={thTdStyle}>Data</td>
-                            <td style={thTdStyle}>Data</td>
-                            <td style={thTdStyle}>Data</td>
-                        </tr>
-                    </tbody>
+                  <thead>
+                    <tr>
+                      <th style={thTdStyle}>URL</th>
+                      <th style={thTdStyle}>Host</th>
+                      <th style={thTdStyle}>Start Date</th>
+                      <th style={thTdStyle}>End Date</th>
+                      <th style={thTdStyle}>Time</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {activeAppointments.map((meeting) => (
+                      <tr key={meeting.id}>
+                        <td style={thTdStyle}>{meeting.url}</td>
+                        <td style={thTdStyle}>{meeting.host.name}</td>
+                        <td style={thTdStyle}>
+                          {new Date(meeting.dateRange.startDate).toLocaleDateString()}
+                        </td>
+                        <td style={thTdStyle}>
+                          {new Date(meeting.dateRange.endDate).toLocaleDateString()}
+                        </td>
+                        <td style={thTdStyle}>
+                          {meeting.timeRange.startTime} - {meeting.timeRange.endTime}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
                 </table>
+              )}
             </div>
-        </div>
 
-        {/* History of Appointments */}
-        <div style={sectionStyle}>
-            <div style={sectionTitleStyle}>History of Appointments</div>
-            <div style={tableContainerStyle}>
+            <div style={tableWrapperStyle}>
+              <h2 style={titleStyle}>History of Appointments ({historyAppointments.length})</h2>
+              {historyAppointments.length === 0 ? (
+                <p>No historical appointments</p>
+              ) : (
                 <table style={tableStyle}>
-                    <thead>
-                        <tr>
-                            <th style={thTdStyle}>URL</th>
-                            <th style={thTdStyle}>Host</th>
-                            <th style={thTdStyle}>Start Date</th>
-                            <th style={thTdStyle}>End Date</th>
-                            <th style={thTdStyle}>Borrowed Item</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td style={thTdStyle}>Data</td>
-                            <td style={thTdStyle}>Data</td>
-                            <td style={thTdStyle}>Data</td>
-                            <td style={thTdStyle}>Data</td>
-                            <td style={thTdStyle}>Data</td>
-                        </tr>
-                        <tr>
-                            <td style={thTdStyle}>Data</td>
-                            <td style={thTdStyle}>Data</td>
-                            <td style={thTdStyle}>Data</td>
-                            <td style={thTdStyle}>Data</td>
-                            <td style={thTdStyle}>Data</td>
-                        </tr>
-                    </tbody>
+                  <thead>
+                    <tr>
+                      <th style={thTdStyle}>URL</th>
+                      <th style={thTdStyle}>Host</th>
+                      <th style={thTdStyle}>Start Date</th>
+                      <th style={thTdStyle}>End Date</th>
+                      <th style={thTdStyle}>Time</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {historyAppointments.map((meeting) => (
+                      <tr key={meeting.id}>
+                        <td style={thTdStyle}>{meeting.url}</td>
+                        <td style={thTdStyle}>{meeting.host.name}</td>
+                        <td style={thTdStyle}>
+                          {new Date(meeting.dateRange.startDate).toLocaleDateString()}
+                        </td>
+                        <td style={thTdStyle}>
+                          {new Date(meeting.dateRange.endDate).toLocaleDateString()}
+                        </td>
+                        <td style={thTdStyle}>
+                          {meeting.timeRange.startTime} - {meeting.timeRange.endTime}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
                 </table>
+              )}
             </div>
-        </div>
-
-        {/* Footer */}
-        <footer style={footerStyle}>
-            <div>Additional links</div>
-            <div style={footerLinksStyle}>
-                <span>Example</span>
-                <span>Example</span>
-                <span>Example</span>
-                <span>Example</span>
-            </div>
-        </footer>
+          </>
+        )}
+      </div>
     </div>
-);
+  );
 };
-
 
 export default ActiveAppointmentsAndHistory;

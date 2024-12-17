@@ -14,6 +14,12 @@ export const meetingApiSlice = apiSlice.injectEndpoints({
         method: "GET",
       }),
     }),
+    getAllMeetings: builder.query({
+      query: () => ({
+        url: '/meeting',
+        method: 'GET',
+      }),
+    }),
     createMeeting: builder.mutation({
       query: (meeting) => ({
         url: "/meeting",
@@ -35,6 +41,7 @@ export const meetingApiSlice = apiSlice.injectEndpoints({
 export const {
   useGetMeetingQuery,
   useGetAvailabilityQuery,
+  useGetAllMeetingsQuery,
   useCreateMeetingMutation,
   useRemoveMeetingMutation,
 } = meetingApiSlice;
