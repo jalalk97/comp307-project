@@ -7,7 +7,7 @@ import { useSelector } from "react-redux";
 import { selectCurrentUser } from "../features/auth/authSlice";
 import { useCreateMeetingMutation } from "../features/meeting/meetingApiSlice";
 
-const API_URL = "http://localhost:4000";
+const API_URL = "https://comp307-project-ibhi.onrender.com";
 
 const CreateMeeting = () => {
   const navigate = useNavigate();
