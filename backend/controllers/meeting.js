@@ -166,9 +166,9 @@ async function getAvailability(req, res) {
     });
   }
   
-  const sanitizedUrl = "https://meeting.com" + id;
+  const sanitizedUrl = "https://comp307-project-ibhi.onrender.com/" + id;
   console.log(sanitizedUrl);
-  const curr_meeting = await Meeting.findOne({ url: sanitizedUrl }).exec();
+  const curr_meeting = await Meeting.findById(id).exec();
 
   const curr_host = curr_meeting.host;
 
