@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Logo from "../assests/logo2.png";
+import Logo from "../../public/logo3.png";
 import Home from "../assests/photo.jpg";
 import { FaRegCircleUser } from "react-icons/fa6";
 import { useSelector } from "react-redux";
@@ -25,7 +25,7 @@ const CreateMeeting = () => {
     endDate: "",
     startTime: "",
     endTime: "",
-    bookingType: "",
+    bookingType: false,
   });
 
   const handleInputChange = (e) => {
@@ -33,23 +33,26 @@ const CreateMeeting = () => {
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleButtonClick = (type) => {
-    setFormData({ ...formData, bookingType: type });
+  const handleButtonClick = () => {
+    setFormData((prevData) => ({
+      ...prevData,
+      bookingType: !prevData.bookingType, 
+    }));
   };
 
-  const getButtonStyle = (type) => ({
+  const getButtonStyle = () => ({
     margin: "5px",
     padding: "10px 20px",
     borderRadius: "5px",
-    background: formData.bookingType === type ? "#990000" : "#fff",
-    color: formData.bookingType === type ? "#fff" : "#000",
+    background: formData.bookingType ? "#990000" : "#fff", 
+    color: formData.bookingType ? "#fff" : "#000",
     border: "1px solid black",
     cursor: "pointer",
   });
 
   const handleSubmit = async () => {
     setGeneratedURL("");
-
+  
     const meetingData = {
       bookingName: formData.bookingName,
       name: formData.name,
@@ -64,7 +67,7 @@ const CreateMeeting = () => {
       bookingType: formData.bookingType,
       host: currentUser.id,
     };
-
+  
     try {
       const meeting = await createMeeting(meetingData);
       if (meeting) {

@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Logo from "../assests/logo2.png";
+import Logo from "../../public/logo3.png";
 import Home from "../assests/photo.jpg";
 import { FaRegCircleUser } from "react-icons/fa6";
 
@@ -10,11 +10,13 @@ const AlternateMeeting = () => {
 
   const [formValues, setFormValues] = useState({
     bookingUrl: "",
-    date: "",
+    startDate: "",
+    endDate: "",
     startTime: "",
     endTime: "",
   });
-  const [isRequestSent, setIsRequestSent] = useState(false); // To track if the request has been sent
+  const [isRequestSent, setIsRequestSent] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -22,20 +24,39 @@ const AlternateMeeting = () => {
       ...formValues,
       [name]: value,
     });
+    setErrorMessage(""); // Clear error when input changes
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
+    const { startDate, endDate } = formValues;
+
+    // Check if end date is earlier than start date
+    if (new Date(endDate) < new Date(startDate)) {
+      setErrorMessage("End date cannot be earlier than the start date.");
+      alert("End date cannot be earlier than the start date.");
+      return;
+    }
+
     console.log("Form Values:", formValues);
-    setIsRequestSent(true); // Set the state to true when the request is sent
-  };
 
-  // Function to generate a new URL
-  const generateNewUrl = () => {
-    const newUrl = `https://booking.com/${Math.random().toString(36).substr(2, 9)}`;
-    setFormValues({
-      ...formValues,
-      bookingUrl: newUrl,
-    });
+    try {
+      const response = await fetch(`http://localhost:4000/meeting`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formValues), // Fix: Closing `body` properly with a semicolon.
+      });
+
+      const result = await response.json();
+
+      if (response.ok) {
+        setIsRequestSent(true);
+        setErrorMessage("");
+      }
+    } catch (error) {
+      console.error("Error updating meeting:", error);
+    }
   };
 
   return (
@@ -59,7 +80,7 @@ const AlternateMeeting = () => {
         </div>
         <div style={styles.navRight}>
           <FaRegCircleUser
-            style={{ color: "#fff", width: "20px", height: "20px" }}
+            style={{ color: "#fff", width: "40px", height: "40px" }}
           />
         </div>
       </nav>
@@ -89,29 +110,31 @@ const AlternateMeeting = () => {
                 marginTop: "5px",
               }}
             />
-            {!isRequestSent && (
-              <button
-                style={{
-                  padding: "10px 20px",
-                  background: "#009900",
-                  border: "1px solid #fff",
-                  color: "#fff",
-                  marginTop: "10px",
-                }}
-                onClick={generateNewUrl}
-              >
-                Generate New URL
-              </button>
-            )}
           </div>
 
           <div>
             <div style={{ display: "flex", flexWrap: "wrap" }}>
               <div style={{ marginTop: "10px", marginBottom: "10px" }}>
-                <h3>Date</h3>
+                <h3>Start Date</h3>
                 <input
-                  name="date"
-                  value={formValues.date}
+                  name="startDate"
+                  value={formValues.startDate}
+                  onChange={handleInputChange}
+                  style={{
+                    display: "block",
+                    width: "200px",
+                    padding: "10px",
+                    marginTop: "5px",
+                  }}
+                  type="date"
+                />
+              </div>
+
+              <div style={{ margin: "10px" }}>
+                <h3>End Date</h3>
+                <input
+                  name="endDate"
+                  value={formValues.endDate}
                   onChange={handleInputChange}
                   style={{
                     display: "block",
@@ -138,6 +161,7 @@ const AlternateMeeting = () => {
                   type="time"
                 />
               </div>
+
               <div style={{ margin: "10px" }}>
                 <h3>End Time</h3>
                 <input
@@ -183,16 +207,26 @@ const AlternateMeeting = () => {
 
       <div style={{ padding: "10px 20px" }}>
         <button
-          style={{ padding: "10px 20px", background: "#990000", color: "#fff" }}
+          style={{
+            padding: "10px 20px",
+            background: "#990000",
+            color: "#fff",
+          }}
           onClick={handleSubmit}
         >
           Send Request
         </button>
       </div>
 
-      {isRequestSent && (
+      {/* {isRequestSent && (
         <div style={{ padding: "10px 20px" }}>
           <h3>Generated URL: {formValues.bookingUrl}</h3>
+        </div>
+      )} */}
+
+      {errorMessage && (
+        <div style={{ color: "red", padding: "10px 20px" }}>
+          <h4>{errorMessage}</h4>
         </div>
       )}
 
@@ -240,86 +274,6 @@ const styles = {
     gap: "20px",
     flexWrap: "wrap",
     padding: "8px 1px",
-  },
-  navButton: {
-    backgroundColor: "transparent",
-    border: "1px solid #ffffff",
-    color: "#fff",
-    padding: "8px 15px",
-    borderRadius: "5px",
-    cursor: "pointer",
-    fontWeight: "bold",
-    fontSize: "14px",
-  },
-  hero: {
-    position: "relative",
-    height: "50vh",
-    backgroundImage: `url('https://grantme.com/wp-content/uploads/2021/09/mcgill.jpeg')`,
-    backgroundSize: "cover",
-    backgroundPosition: "center",
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  heroOverlay: {
-    position: "absolute",
-    top: 0,
-    left: 0,
-    width: "100%",
-    height: "100%",
-    backgroundColor: "rgba(255, 255, 255, 0.5)",
-    zIndex: 1,
-  },
-  heroContent: {
-    position: "relative",
-    zIndex: 2,
-    textAlign: "center",
-  },
-  logo: {
-    width: "30%",
-    height: "auto",
-  },
-  aboutSection: {
-    padding: "20px",
-    backgroundColor: "#ffffff",
-    textAlign: "center",
-    flex: "1 0 auto",
-  },
-  aboutBox: {
-    backgroundColor: "#918e8e",
-    borderRadius: "10px",
-    padding: "20px",
-    maxWidth: "80%",
-    margin: "0 auto",
-    boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
-  },
-  aboutTitle: {
-    fontSize: "clamp(18px, 3vw, 24px)",
-    fontWeight: "bold",
-    marginBottom: "10px",
-    color: "#3d2c2c",
-  },
-  aboutText: {
-    fontSize: "clamp(14px, 2vw, 16px)",
-    color: "#000000",
-    lineHeight: "1.5",
-  },
-  footer: {
-    backgroundColor: "#000000",
-    padding: "20px",
-    textAlign: "center",
-    flexShrink: 0,
-  },
-  footerLinks: {
-    display: "flex",
-    justifyContent: "center",
-    gap: "15px",
-    flexWrap: "wrap",
-  },
-  footerLink: {
-    color: "#ffffff",
-    textDecoration: "none",
-    fontSize: "14px",
   },
 };
 

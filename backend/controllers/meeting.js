@@ -84,7 +84,7 @@ async function updateMeeting(req, res) {
   try {
     const updateFields = req.body; // Get update fields from request body
 
-    if (!updateFields.url) {
+    if (!updateFields.bookingUrl) {
       return res
         .status(400)
         .json({ message: "URL is required to update a meeting." });
@@ -92,7 +92,7 @@ async function updateMeeting(req, res) {
 
     // Find the meeting by URL and update it with the provided fields
     const updatedMeeting = await Meeting.findOneAndUpdate(
-      { url: updateFields.url }, // Find by URL
+      { url: updateFields.bookingUrl }, // Find by URL
       { $set: updateFields }, // Update with provided fields
       { new: true, runValidators: true }, // Return the updated document and validate fields
     );
