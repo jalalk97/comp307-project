@@ -204,10 +204,52 @@ async function getAvailability(req, res) {
  
 }
 
+/**
+ * Retrieves all meetings from the database.
+ * Responds with a list of meetings, including populated host information.
+ */
+async function getAllMeetings(req, res) {
+  try {
+    const meetings = await Meeting.find()
+      .populate('host', 'email name')
+      .exec();
+
+    if (!meetings || meetings.length === 0) {
+      return res.status(404).json({ 
+        success: false,
+        message: "No meetings found" 
+      });
+    }
+
+    // Transform the data to match frontend expectations
+    const meetings_data = meetings.map(meeting => ({
+      id: meeting._id,
+      dateRange: meeting.dateRange,
+      timeRange: meeting.timeRange,
+      host: meeting.host,
+      multiple_people: meeting.multiple_people,
+      is_weekly: meeting.is_weekly,
+      url: meeting.url,
+      to_borrow: meeting.to_borrow
+    }));
+
+    // Send response in the expected format
+    return res.status(200).json({ meetings: meetings_data });
+  } catch (error) {
+    console.error("Error in getAllMeetings:", error);
+    return res.status(500).json({ 
+      success: false,
+      message: "Internal server error",
+      error: error.message 
+    });
+  }
+}
+
 module.exports = {
   getAvailability,
   getMeeting,
   createMeeting,
   updateMeeting,
   removeMeeting,
+  getAllMeetings,
 };
