@@ -39,7 +39,7 @@ const BookWithURL = () => {
     const meetingUrl = e.target.elements[0].value.trim();
     console.log("Meeting URL:", meetingUrl);
 
-
+    
     const urlSegments = meetingUrl.split("/").filter(Boolean);
     const id = urlSegments.pop();
     console.log("Meeting ID:", id);

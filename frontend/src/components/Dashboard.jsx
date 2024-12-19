@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate  } from "react-router-dom";
+import { useNavigate, Link} from "react-router-dom";
 
 import './css/Dashboard.css'
 import { selectCurrentUser, userLoggedOut } from "../features/auth/authSlice";
@@ -45,6 +45,18 @@ const Dashboard = () => {
     const goToAvailability = () => {
         navigate("/availability");
     };
+
+    const linkButton = {
+        padding: "8px 18px",
+        background: "none",
+        border: "2px solid white",
+        color: "white",
+        borderRadius: "10px", 
+        cursor: "pointer",
+        fontSize: "2vw",
+        transition: "0.3s, color 0.3s",
+   }
+
     return (
         <div className="body">
           <header className="header">
@@ -58,6 +70,7 @@ const Dashboard = () => {
               <button onClick={goToActiveAppointmentAndHistory}>
                 All Appointments
               </button>
+              <Link style={linkButton} to="/">Home</Link>
               <button onClick={goToAlternate}>Alternate Meeting</button>
             </div>
           </header>
