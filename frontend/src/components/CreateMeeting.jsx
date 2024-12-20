@@ -7,8 +7,6 @@ import { useSelector } from "react-redux";
 import { selectCurrentUser } from "../features/auth/authSlice";
 import { useCreateMeetingMutation } from "../features/meeting/meetingApiSlice";
 
-const API_URL = "https://comp307-project-ibhi.onrender.com";
-
 const CreateMeeting = () => {
   const navigate = useNavigate();
 
@@ -36,7 +34,7 @@ const CreateMeeting = () => {
   const handleButtonClick = () => {
     setFormData((prevData) => ({
       ...prevData,
-      bookingType: !prevData.bookingType, 
+      bookingType: !prevData.bookingType,
     }));
   };
 
@@ -44,7 +42,7 @@ const CreateMeeting = () => {
     margin: "5px",
     padding: "10px 20px",
     borderRadius: "5px",
-    background: formData.bookingType ? "#990000" : "#fff", 
+    background: formData.bookingType ? "#990000" : "#fff",
     color: formData.bookingType ? "#fff" : "#000",
     border: "1px solid black",
     cursor: "pointer",
@@ -52,7 +50,7 @@ const CreateMeeting = () => {
 
   const handleSubmit = async () => {
     setGeneratedURL("");
-  
+
     const meetingData = {
       bookingName: formData.bookingName,
       name: formData.name,
@@ -67,12 +65,13 @@ const CreateMeeting = () => {
       bookingType: formData.bookingType,
       host: currentUser.id,
     };
-  
+
     try {
+      console.log("creating meeting");
       const meeting = await createMeeting(meetingData);
       if (meeting) {
         console.log("Meeting created:", meeting);
-        setGeneratedURL(`${API_URL}/meeting/${meeting.data.id}`);
+        setGeneratedURL(`${meeting.data.url}`);
       }
     } catch (error) {
       console.error("Error creating meeting:", error);
@@ -83,7 +82,13 @@ const CreateMeeting = () => {
     <div>
       <nav style={styles.navbar}>
         <div style={styles.navLeft}>
-          <img onClick={() => navigate(-1)} src={Logo} alt="logo" width={150} height={100} />
+          <img
+            onClick={() => navigate(-1)}
+            src={Logo}
+            alt="logo"
+            width={150}
+            height={100}
+          />
         </div>
         <div>
           <button
