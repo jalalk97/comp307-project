@@ -156,7 +156,7 @@ const ActiveAppointmentsAndHistory = () => {
                   <tbody>
                     {activeAppointments.map((meeting) => (
                       <tr key={meeting.id}>
-                        <td style={thTdStyle}>{meeting.url}</td>
+                        <td style={thTdStyle}>{"https://comp307-project-ibhi.onrender.com/meetings/" + meeting.id}</td>
                         <td style={thTdStyle}>{meeting.host.name}</td>
                         <td style={thTdStyle}>
                           {new Date(meeting.dateRange.startDate).toLocaleDateString()}
@@ -192,7 +192,7 @@ const ActiveAppointmentsAndHistory = () => {
                   <tbody>
                     {historyAppointments.map((meeting) => (
                       <tr key={meeting.id}>
-                        <td style={thTdStyle}>{meeting.url}</td>
+                        <td style={thTdStyle}>{"https://comp307-project-ibhi.onrender.com/meetings/" + meeting.id}</td>
                         <td style={thTdStyle}>{meeting.host.name}</td>
                         <td style={thTdStyle}>
                           {new Date(meeting.dateRange.startDate).toLocaleDateString()}
