@@ -219,16 +219,18 @@ return (
                             <th style={thTdStyle}>Available Dates</th>
                             <th style={thTdStyle}>Times</th>
                             <th style={thTdStyle}>Multiple People</th>
+                            <th style={thTdStyle}>To Borrow an Item?</th>
+                            <th style={thTdStyle}>Occuring Weekly?</th>
                         </tr>
                     </thead>
                     <tbody>
                         {isLoading ? (
                     <tr>
-                        <td style={thTdStyle} colSpan="5">Loading...</td>
+                        <td style={thTdStyle} colSpan="7">Loading...</td>
                     </tr>
                     ) : error ? (
                     <tr>
-                        <td style={thTdStyle} colSpan="5">
+                        <td style={thTdStyle} colSpan="7">
                         {error?.data?.message || "Error fetching meeting data"}
                         </td>
                     </tr>
@@ -249,11 +251,17 @@ return (
                         </td>
                         <td style={thTdStyle}>
                         {data.meeting_data.multiple_people ? "Yes" : "No"}
-                    </td>
+                        </td>
+                        <td style={thTdStyle}>
+                            {data.meeting_data.to_borrow ? "Yes" : "No"}
+                        </td>
+                        <td style={thTdStyle}>
+                            {data.meeting_data.is_weekly ? "Yes" : "No"}
+                        </td>
                   </tr>
                     ) : (
                   <tr>
-                        <td style={thTdStyle} colSpan="5">No meeting data available</td>
+                        <td style={thTdStyle} colSpan="7">No meeting data available</td>
                         </tr>
                     )}
                     </tbody>

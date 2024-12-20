@@ -185,7 +185,7 @@ const Availability = () => {
       borderRadius: '0.5vw',
       boxShadow: '0 0.5vw 1vw rgba(0, 0, 0, 0.1)',
       margin: '2vw auto',
-      width: '80%',
+      width: '100%',
     };
   
     const tableStyle = {
@@ -237,16 +237,19 @@ const Availability = () => {
                     <th style={thTdStyle}>Host</th>
                     <th style={thTdStyle}>Dates</th>
                     <th style={thTdStyle}>Time</th>
+                    <th style={thTdStyle}>Multiple People</th>
+                    <th style={thTdStyle}>To Borrow an Item?</th>
+                    <th style={thTdStyle}>Occuring Weekly?</th>
                   </tr>
                 </thead>
                   <tbody>
                   {isLoading ? (
                     <tr>
-                      <td style={thTdStyle} colSpan="4">Loading...</td>
+                      <td style={thTdStyle} colSpan="7">Loading...</td>
                     </tr>
                   ) : error ? (
                     <tr>
-                      <td style={thTdStyle} colSpan="4">
+                      <td style={thTdStyle} colSpan="7">
                         {error?.data?.message || "Error fetching meeting data"}
                       </td>
                     </tr>
@@ -264,11 +267,20 @@ const Availability = () => {
                         <td style={thTdStyle}>
                           {meeting.timeRange.startTime} to {meeting.timeRange.endTime}
                         </td>
+                        <td style={thTdStyle}>
+                        {meeting.multiple_people ? "Yes" : "No"}
+                        </td>
+                        <td style={thTdStyle}>
+                            {meeting.to_borrow ? "Yes" : "No"}
+                        </td>
+                        <td style={thTdStyle}>
+                            {meeting.is_weekly ? "Yes" : "No"}
+                        </td>
                       </tr>
                     ))
                   ) : (
                     <tr>
-                      <td style={thTdStyle} colSpan="4">No meeting data available</td>
+                      <td style={thTdStyle} colSpan="7">No meeting data available</td>
                     </tr>
                   )}
                 </tbody>
