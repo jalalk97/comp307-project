@@ -68,7 +68,7 @@ const CreateBorrowMeeting = () => {
     <div style={{ fontFamily: "Arial, sans-serif", fontSize: "1.5vw" }}>
       <nav style={styles.navbar}>
         <div style={styles.navLeft}>
-          <img
+          <img onClick={() => navigate(-1)}
             src={Logo}
             alt="logo"
             style={{ width: "15vw", height: "auto" }}
@@ -82,9 +82,7 @@ const CreateBorrowMeeting = () => {
             Back to Dashboard
           </button>
         </div>
-        <div style={styles.navRight}>
-          <FaRegCircleUser style={{ color: "#fff", width: "4vw", height: "4vw" }} />
-        </div>
+      
       </nav>
 
       <div style={styles.mainContainer}>
@@ -183,20 +181,6 @@ const CreateBorrowMeeting = () => {
           <div style={styles.imageContainer}></div>
         </div>
       </div>
-
-      <footer style={styles.footer}>
-        <h3 style={{ margin: 0, fontSize: "2vw" }}>Additional links</h3>
-        <div style={styles.footerLinks}>
-          <div style={styles.footerColumn}>
-            <p style={{ fontSize: "1.5vw", margin: 0 }}>Example</p>
-            <p style={{ fontSize: "1.5vw", margin: 0 }}>Example</p>
-          </div>
-          <div style={styles.footerColumn}>
-            <p style={{ fontSize: "1.5vw", margin: 0 }}>Example</p>
-            <p style={{ fontSize: "1.5vw", margin: 0 }}>Example</p>
-          </div>
-        </div>
-      </footer>
     </div>
   );
 };
@@ -315,22 +299,6 @@ const styles = {
     fontWeight: "bold",
     borderRadius: "0.5vw",
     fontSize: "1.5vw",
-  },
-  footer: {
-    background: "#000",
-    color: "#fff",
-    padding: "2vw",
-  },
-  footerLinks: {
-    display: "flex",
-    paddingTop: "2vw",
-    paddingLeft: "2vw",
-    gap: "2vw",
-  },
-  footerColumn: {
-    display: "flex",
-    flexDirection: "column",
-    gap: "2vw",
   },
 };
 

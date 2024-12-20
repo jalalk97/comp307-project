@@ -12,66 +12,28 @@ const Dashboard = () => {
 
     const currentUser = useSelector(selectCurrentUser);
 
-    const goToLanding = () => {
-        navigate("/");
-    };
-    const goToAlternate = () => {
-        navigate("/alternate-meeting");
-    };
-    const goToActiveAppointmentAndHistory = () => {
-        navigate("/active-appointment-history");
-    };
-    const goToBookWithURL = () => {
-        navigate("/book-with-url");
-    };
     const goToLogout = () => {
         dispatch(userLoggedOut())
         console.log("user has been logged out");
         //Potentially have to notify backend
         navigate("/");
     };
-    const goToCreateMeeting = () => {
-        navigate("/create-meeting");
-    };
-    const goToRemoveMeeting = () => {
-        navigate("/remove-meeting");
-    };
-    const goToBorrow = () => {
-        navigate("/create-borrow-meeting");
-    };
-    const goToFeedback = () => {
-        navigate("/feedback");
-    };
-    const goToAvailability = () => {
-        navigate("/availability");
-    };
 
-    const linkButton = {
-        padding: "8px 18px",
-        background: "none",
-        border: "2px solid white",
-        color: "white",
-        borderRadius: "10px", 
-        cursor: "pointer",
-        fontSize: "2vw",
-        transition: "0.3s, color 0.3s",
-   }
 
     return (
         <div className="body">
           <header className="header">
             <div className="logo">
-              <img src="logo2.png" alt="McGill CS EZ Booking Logo" />
+              <img onClick={() => navigate("/")} src="logo2.png" alt="McGill CS EZ Booking Logo" />
             </div>
     
             <div className="nav-buttons">
-              <button onClick={goToLogout}>Logout</button>
-              <button onClick={goToBookWithURL}>BookWithURL</button>
-              <button onClick={goToActiveAppointmentAndHistory}>
+              <button onClick={(goToLogout)}>Logout</button>
+              <button onClick={() => navigate("/active-appointment-history")}>
                 All Appointments
               </button>
-              <Link style={linkButton} to="/">Home</Link>
-              <button onClick={goToAlternate}>Alternate Meeting</button>
+              <button onClick={() => navigate('/')}>Home</button>
+              <button onClick={() => navigate("/alternate-meeting")}>Alternate Meeting</button>
             </div>
           </header>
     
@@ -80,16 +42,17 @@ const Dashboard = () => {
             {/*need to add user name*/}
             <h2 style={{ marginTop: "5vw" }}>{`Welcome Back ${currentUser?.name ?? ""}!`}</h2>
             <div className="grid-container">
-              <div className="grid-item" onClick={goToCreateMeeting}>Create a Meeting</div>
-              <div className="grid-item" onClick={goToRemoveMeeting}>Remove a Meeting</div>
-              <div className="grid-item" onClick={goToBorrow}>Create Borrow an Item</div>
-              <div className="grid-item" onClick={goToFeedback}>Feedback</div>
-              <div className="grid-item" onClick={goToAvailability}>Availability</div>
-              <div className="grid-item" onClick={goToLanding}>Landing</div>
+              <div className="grid-item" onClick={() => navigate("/create-meeting")}>Create a Meeting</div>
+              <div className="grid-item" onClick={() => navigate("/remove-meeting")}>Remove a Meeting</div>
+              <div className="grid-item" onClick={() => navigate("/create-borrow-meeting")}>Create Borrow an Item</div>
+              <div className="grid-item" onClick={() => navigate("/feedback")}>Feedback</div>
+              <div className="grid-item" onClick={() => navigate("/availability")}>Availability</div>
+              <button className="grid-item" onClick={() => navigate("/book-with-url")}>BookWithURL</button>
             </div>
           </main>
         </div>
       );
     };
+
 
 export default Dashboard;

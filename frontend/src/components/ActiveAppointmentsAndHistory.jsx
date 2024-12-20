@@ -1,6 +1,7 @@
 import React from "react";
 import Logo from "../assests/logo2.png";
 import { useNavigate } from "react-router-dom";
+import AuthButtons from "./AuthButtons";
 import { useGetAllMeetingsQuery } from "../features/meeting/meetingApiSlice";
 
 const ActiveAppointmentsAndHistory = () => {
@@ -115,11 +116,12 @@ const ActiveAppointmentsAndHistory = () => {
   return (
     <div style={containerStyle}>
       <header style={headerStyle}>
-        <img style={imgContainerStyle} src={Logo} alt="Logo" />
+        <img onClick={() => navigate(-1)} style={imgContainerStyle} src={Logo} alt="Logo" />
         <button onClick={handleDashboardClick} style={buttonStyle}>
-          Back
+          Landing
         </button>
-      </header>
+        <AuthButtons/>
+        </header>
 
       <div style={contentWrapperStyle}>
         {isLoading && <p>Loading meetings...</p>}

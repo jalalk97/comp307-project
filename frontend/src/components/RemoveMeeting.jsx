@@ -25,7 +25,7 @@ const RemoveMeeting = () => {
     <div style={{ fontFamily: "Arial, sans-serif" }}>
       <nav style={styles.navbar}>
         <div style={styles.navLeft}>
-          <img src="/logo2.png" alt="logo" width={150} height={100} />
+          <img onClick={() => navigate(-1)} src="/logo2.png" alt="logo" width={150} height={100} />
         </div>
         <div>
           <Link to="/dashboard" style={styles.backButton}>

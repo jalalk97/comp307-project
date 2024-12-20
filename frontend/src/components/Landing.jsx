@@ -29,7 +29,7 @@ const Landing = () => {
       <section style={styles.hero}>
         <div style={styles.heroOverlay}></div> {/* Semi-transparent overlay */}
         <div style={styles.heroContent}>
-          <img
+          <img onClick={() => navigate("/")}
             src="/logo.png" // Reference to the logo in the public folder
             alt="Logo"
             style={styles.logo}
@@ -53,21 +53,6 @@ const Landing = () => {
           </p>
         </div>
       </section>
-
-      {/* Footer */}
-      <footer style={styles.footer}>
-        <div style={styles.footerLinks}>
-          <a href="/" style={styles.footerLink}>
-            Example
-          </a>
-          <a href="/" style={styles.footerLink}>
-            Example
-          </a>
-          <a href="/" style={styles.footerLink}>
-            Example
-          </a>
-        </div>
-      </footer>
     </div>
   );
 };
@@ -166,23 +151,7 @@ const styles = {
     color: "#000000",
     lineHeight: "1.5",
   },
-  footer: {
-    backgroundColor: "#000000",
-    padding: "20px",
-    textAlign: "center",
-    flexShrink: 0,
-  },
-  footerLinks: {
-    display: "flex",
-    justifyContent: "center",
-    gap: "15px",
-    flexWrap: "wrap",
-  },
-  footerLink: {
-    color: "#ffffff",
-    textDecoration: "none",
-    fontSize: "14px",
-  },
+
 };
 
 export default Landing;

@@ -30,17 +30,7 @@ const Feedback = () => {
         console.log(payload);
         //fetch backend and check if data was successfully submitted
         try{
-            await createFeedback(payload);
-    //         const response = await fetch(`http://localhost:4000/feedback`, {
-    //             method: "POST",
-    //             headers: {"Content-Type" : "application/json"},
-    //             body: JSON.stringify(payload)
-    //         });
-    // 
-
-    //         if(!response.ok){
-    //             throw new Error(`Error: ${response.statusText}`);}
-            
+            await createFeedback(payload);       
             console.log("feedback successfully submitted");
             navigate("/Dashboard");
         }
@@ -54,7 +44,7 @@ const Feedback = () => {
     <div className="background">
       <div className="background-layer">
         <div className="logo_feedback">
-          <img src="logo.png" alt="Logo" />
+          <img onClick={() => navigate(-1)} src="logo.png" alt="Logo" />
         </div>
         <div className="content">
           <div className="container">

@@ -63,7 +63,7 @@ const AlternateMeeting = () => {
     <div>
       <nav style={styles.navbar}>
         <div style={styles.navLeft}>
-          <img src={Logo} alt="logo" width={150} height={100} />
+          <img onClick={() => navigate(-1)} src={Logo} alt="logo" width={150} height={100} />
         </div>
         <div>
           <button
@@ -77,11 +77,6 @@ const AlternateMeeting = () => {
           >
             Back to Dashboard
           </button>
-        </div>
-        <div style={styles.navRight}>
-          <FaRegCircleUser
-            style={{ color: "#fff", width: "40px", height: "40px" }}
-          />
         </div>
       </nav>
 
@@ -229,27 +224,6 @@ const AlternateMeeting = () => {
           <h4>{errorMessage}</h4>
         </div>
       )}
-
-      <footer style={{ background: "#000", color: "#fff", padding: "20px" }}>
-        <h3>Additional Link</h3>
-        <div
-          style={{
-            display: "flex",
-            paddingTop: "20px",
-            gap: 20,
-            paddingLeft: "20px",
-          }}
-        >
-          <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
-            <p>Example</p>
-            <p>Example</p>
-          </div>
-          <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
-            <p>Example</p>
-            <p>Example</p>
-          </div>
-        </div>
-      </footer>
     </div>
   );
 };

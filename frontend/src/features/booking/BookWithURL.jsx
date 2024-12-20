@@ -31,7 +31,7 @@ const BookWithURL = () => {
 
   
   const onHomeClick = () => {
-    navigate("/");
+    navigate(-1);
   }
 
   const getMeetingPress = async (e) => {
@@ -95,7 +95,7 @@ const BookWithURL = () => {
 };
 
 const headerStyle = {
-    backgroundColor: "#c00000",
+    backgroundColor: "#990000",
     color: "#fff",
     display: "flex",
     justifyContent: "space-between",
@@ -106,7 +106,7 @@ const headerStyle = {
 
 const homeButtonStyle = {
     backgroundColor: "#fff",
-    color: "#c00000",
+    color: "#990000",
     border: "2px solid #fff",
     padding: "8px 20px",
     fontSize: "1rem",
@@ -138,7 +138,7 @@ const inputStyle = {
 };
 
 const submitButtonStyle = {
-    backgroundColor: "#c00000",
+    backgroundColor: "#990000",
     color: "#fff",
     border: "none",
     padding: "10px 20px",
@@ -168,7 +168,7 @@ const thTdStyle = {
 };
 
 const bookButtonStyle = {
-    backgroundColor: "#c00000",
+    backgroundColor: "#990000",
     color: "#fff",
     border: "none",
     padding: "10px 20px",
@@ -179,32 +179,19 @@ const bookButtonStyle = {
     cursor: "pointer",
 };
 
-const footerStyle = {
-    backgroundColor: "#000",
-    color: "#fff",
-    padding: "20px",
-    textAlign: "center",
-};
-
-const footerLinksStyle = {
-    display: "flex",
-    justifyContent: "center",
-    gap: "20px",
-    fontSize: "0.9rem",
-};
 
 const nameStyle = {
     marginTop: "40px",
-}
+};
 
 return (
     <div style={containerStyle}>
         {/* Header */}
         <header style={headerStyle}>
             <div>
-            <img src="logo2.png" alt="Logo" width={"150px"} height={"120px"}/>
+            <img onClick={() => navigate(-1)} src="logo2.png" alt="Logo" width={"150px"} height={"120px"}/>
             </div>
-            <button onClick={onHomeClick} style={homeButtonStyle}>Home</button>
+            <button onClick={onHomeClick} style={homeButtonStyle}>Back</button>
         </header>
 
         {/* Content */}
@@ -288,17 +275,6 @@ return (
             </div>
             )}
         </div>
-
-        {/* Footer */}
-        <footer style={footerStyle}>
-            <div>Additional links</div>
-            <div style={footerLinksStyle}>
-                <span>Example</span>
-                <span>Example</span>
-                <span>Example</span>
-                <span>Example</span>
-            </div>
-        </footer>
     </div>
 );
 };
