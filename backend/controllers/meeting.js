@@ -26,15 +26,11 @@ async function getMeeting(req, res) {
       message: "Did not find a meeting with the corresponding url",
     });
   }
-  const meeting_data = {
-    dateRange: meeting.dateRange,
-    timeRange: meeting.timeRange,
-    host: meeting.host,
-    multiple_people: meeting.multiple_people,
-    is_weekly: meeting.is_weekly,
-    url: meeting.url,
-    id: meeting._id,
-  }; 
+
+
+  const meeting_data = meeting.toJSON();
+
+  console.log("Meeting_data: ", meeting_data);
 
   const data = {
     meeting_data,
@@ -175,14 +171,7 @@ async function getAvailability(req, res) {
   }
 
 
-  const meeting_data = meetings.map(meeting => ({
-      dateRange: meeting.dateRange,
-      timeRange: meeting.timeRange,
-      host: meeting.host,
-      multiple_people: meeting.multiple_people,
-      is_weekly: meeting.is_weekly,
-      url: meeting.url,
-  }));
+  const meeting_data = meetings.map(meeting => meeting.toJSON());
 
   const data = {
     meeting_data,
