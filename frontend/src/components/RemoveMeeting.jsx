@@ -1,6 +1,10 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 import { useRemoveMeetingMutation } from "../features/meeting/meetingApiSlice";
+import { toastHelper } from "../../utils/toastHelper";
 
 const RemoveMeeting = () => {
   const navigate = useNavigate();
@@ -13,19 +17,34 @@ const RemoveMeeting = () => {
     const meetingUrl = elements.url.value;
     const meetingId = meetingUrl.split("/").filter(Boolean).pop();
     try {
-      await removeMeeting(meetingId);
-      console.log(`Meeting ${meetingId} removed`);
-      navigate("/Dashboard");
+      await removeMeeting(meetingId).unwrap();
+      navigate("/dashboard");
+      setTimeout(() => {
+        toastHelper("Meeting was successfully removed");
+      }, 1);
     } catch (err) {
-      console.log(err);
+      if (err.data) {
+        toastHelper(err.data.message, "error");
+      } else {
+        console.log(err);
+        toastHelper("An unexpected error occured", "error");
+      }
     }
   };
 
   return (
     <div style={{ fontFamily: "Arial, sans-serif" }}>
+      <ToastContainer />
+
       <nav style={styles.navbar}>
         <div style={styles.navLeft}>
-          <img onClick={() => navigate(-1)} src="/logo2.png" alt="logo" width={150} height={100} />
+          <img
+            onClick={() => navigate(-1)}
+            src="/logo2.png"
+            alt="logo"
+            width={150}
+            height={100}
+          />
         </div>
         <div>
           <Link to="/dashboard" style={styles.backButton}>
@@ -55,6 +74,7 @@ const RemoveMeeting = () => {
                 borderRadius: "4px",
               }}
               placeholder="Enter the meeting URL"
+              required
               onChange={(e) => setUrlInput(e.target.value)}
             />
             <p style={{ marginTop: "10px", fontSize: "14px", color: "#333" }}>

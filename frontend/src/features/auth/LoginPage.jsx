@@ -27,7 +27,12 @@ const LoginPage = () => {
       dispatch(userLoggedIn(token, user));
       navigate("/Dashboard");
     } catch (err) {
-      setError(err.data.message);
+      if (err.data) {
+        setError(err.data.message);
+      } else {
+        console.log(err);
+        setError("Invalid username or password");
+      }
     }
   };
 
