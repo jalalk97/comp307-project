@@ -4,7 +4,7 @@ const Meeting = require("../models/meeting");
 async function getMeeting(req, res) {
   const id = req.params.url;
   console.log("id:", id);
-  
+
   if (!id) {
     console.log("!id");
     return res.status(400).json({ message: "URL is required" });
@@ -16,7 +16,7 @@ async function getMeeting(req, res) {
       message: "Provided URL is not a string",
     });
   }
-  
+
   const meeting = await Meeting.findById(id).populate('host', 'email name').exec();
 
   console.log(meeting);
@@ -27,20 +27,17 @@ async function getMeeting(req, res) {
     });
   }
 
-
   const meeting_data = meeting.toJSON();
 
   console.log("Meeting_data: ", meeting_data);
 
   const data = {
     meeting_data,
-  }
+  };
 
   console.log("meeting data:", meeting_data);
 
   return res.status(200).json(data);
-
- 
 }
 
 async function createMeeting(req, res) {
@@ -109,7 +106,7 @@ async function removeMeeting(req, res) {
     if (!user) {
       return res
         .status(401)
-        .json({ messagee: "You must be logged in to remove a meeting" });
+        .json({ message: "You must be logged in to remove a meeting" });
     }
 
     const { id } = req.params;
@@ -124,7 +121,7 @@ async function removeMeeting(req, res) {
     if (meeting.host.toString() !== user._id.toString()) {
       return res
         .status(403)
-        .json({ messagee: "You cannot remove someone else's meeting" });
+        .json({ message: "You cannot remove someone else's meeting" });
     }
 
     await meeting.deleteOne();
@@ -133,15 +130,23 @@ async function removeMeeting(req, res) {
       .status(200)
       .json({ message: "The meeting was successfully removed" });
   } catch (err) {
-    console.error("Error deleting meeting:", err);
-    res.status(500).json({ message: "Internal server error" });
+    console.log(err.name);
+    switch (err.name) {
+      case "BSONError":
+      case "CastError":
+        res.status(404).json({ message: "Meeting not found" });
+        break;
+      default:
+        res.status(500).json({ message: "An unexpected server error occured" });
+        break;
+    }
   }
 }
 
 async function getAvailability(req, res) {
   const id = req.params.url;
   console.log("id:", id);
-  
+
   if (!id) {
     console.log("!id");
     return res.status(400).json({ message: "URL is required" });
@@ -153,7 +158,6 @@ async function getAvailability(req, res) {
       message: "Provided URL is not a string",
     });
   }
-  
 
   const curr_meeting = await Meeting.findById(id).exec();
 
@@ -161,7 +165,9 @@ async function getAvailability(req, res) {
 
   console.log(curr_host);
 
-  const meetings = await Meeting.find({ host: curr_host }).populate('host', 'name email').exec();
+  const meetings = await Meeting.find({ host: curr_host })
+    .populate("host", "name email")
+    .exec();
 
   console.log("Meetings by Host:", meetings);
 
@@ -170,18 +176,15 @@ async function getAvailability(req, res) {
     return res.status(404).json({ message: "No meetings found for the host" });
   }
 
-
-  const meeting_data = meetings.map(meeting => meeting.toJSON());
+  const meeting_data = meetings.map((meeting) => meeting.toJSON());
 
   const data = {
     meeting_data,
-  }
+  };
 
   console.log("meeting data:", meeting_data);
 
   return res.status(200).json(data);
-
- 
 }
 
 /**
@@ -190,19 +193,17 @@ async function getAvailability(req, res) {
  */
 async function getAllMeetings(req, res) {
   try {
-    const meetings = await Meeting.find()
-      .populate('host', 'email name')
-      .exec();
+    const meetings = await Meeting.find().populate("host", "email name").exec();
 
     if (!meetings || meetings.length === 0) {
-      return res.status(404).json({ 
+      return res.status(404).json({
         success: false,
-        message: "No meetings found" 
+        message: "No meetings found",
       });
     }
 
     // Transform the data to match frontend expectations
-    const meetings_data = meetings.map(meeting => ({
+    const meetings_data = meetings.map((meeting) => ({
       id: meeting._id,
       dateRange: meeting.dateRange,
       timeRange: meeting.timeRange,
@@ -210,17 +211,17 @@ async function getAllMeetings(req, res) {
       multiple_people: meeting.multiple_people,
       is_weekly: meeting.is_weekly,
       url: meeting.url,
-      to_borrow: meeting.to_borrow
+      to_borrow: meeting.to_borrow,
     }));
 
     // Send response in the expected format
     return res.status(200).json({ meetings: meetings_data });
   } catch (error) {
     console.error("Error in getAllMeetings:", error);
-    return res.status(500).json({ 
+    return res.status(500).json({
       success: false,
       message: "Internal server error",
-      error: error.message 
+      error: error.message,
     });
   }
 }
