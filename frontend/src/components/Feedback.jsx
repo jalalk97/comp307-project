@@ -1,15 +1,17 @@
 import React from "react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import Home from "../assests/photo.jpg";
 import './css/Feedback.css';
 import { useCreateFeedbackMutation } from "../features/feedback/feedbackApiSlice";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { toastHelper } from "../../utils/toastHelper";
 
 const Feedback = () => {
     const navigate = useNavigate();
 
     const [createFeedback] = useCreateFeedbackMutation();
-    const [successMessage, setSuccessMessage] = useState("");
-    const [errorMessage, setErrorMessage] = useState("");
     const [submitted, setSubmitted] = useState(false);
     const [formData, setFormData] = useState ({
       rating: "",
@@ -17,8 +19,6 @@ const Feedback = () => {
     });
 
     const handleInputChange = (e) => {
-      setErrorMessage("");
-      setSuccessMessage("");
       const { name, value } = e.target;
       setFormData({ ...formData, [name]: value });
     };
@@ -32,14 +32,14 @@ const Feedback = () => {
     const handleSubmitClick = async () => {
         //will find the value of the input that is currently selected if none is selected will raise an error
         if(submitted){
-          setErrorMessage("You already submitted a rating!");
+          toastHelper("You already submitted a rating!", "error");
           return;
         }
         const rating = formData.rating;
         const comment = formData.comment;
         console.log(formData);
         if(!rating) {
-            setErrorMessage("Please set a rating before submitting!");
+            toastHelper("Please set a rating before submitting!", "error");
             return;
         }
         console.log("Rating is", rating);
@@ -51,17 +51,20 @@ const Feedback = () => {
         try{
             await createFeedback(payload);       
             console.log("feedback successfully submitted");
-            setSuccessMessage("Thanks for your feedback!");
+            toastHelper("Feedback successfully submitted!")
             setSubmitted(true);
         }
         catch (error){
             console.error("The following error occured", error);
+            toastHelper(error.data?.meesage, "error");
         }
     };
 
     
   return (
     <div className="background">
+      <img style={{width: "100%", height: "100vh"}}src={Home}></img>
+      <ToastContainer/>
       <div className="background-layer">
         <div className="logo_feedback">
           <img onClick={() => navigate(-1)} src="logo.png" alt="Logo" />
@@ -97,14 +100,6 @@ const Feedback = () => {
                     placeholder="Tell us your feedback here..."
                     onChange={handleInputChange}
                   ></textarea>
-
-                  {errorMessage && (
-                    <div style={{ color: "red", marginBottom: "10px" }}>{errorMessage}</div>
-                  )}
-
-                  {successMessage && (
-                    <div style={{ color: "green", marginBottom: "10px" }}>{successMessage}</div>
-                  )}
             </div>
             <div className="buttons">
               <button
