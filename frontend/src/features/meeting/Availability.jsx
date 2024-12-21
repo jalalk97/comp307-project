@@ -1,15 +1,13 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { useGetAvailabilityQuery } from "./meetingApiSlice"; // RTK Query mutation
+import { useGetAvailabilityQuery } from "./meetingApiSlice";
 import { startFetchMeeting, fetchMeeting } from "./meetingSlice";
 
 
 const Availability = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    //const { meetingdata, loading, error } = useSelector((state) => state.meeting);
-
     
     const [urlInput, setUrlInput] = useState("");
     const [meetingId, setMeetingId] = useState("");
@@ -17,7 +15,7 @@ const Availability = () => {
     const [errorMessage, setErrorMessage] = useState("");
 
     const { data, error, isLoading } = useGetAvailabilityQuery(meetingId, {
-      skip: !meetingId, // Prevents query execution until meetingId is set
+      skip: !meetingId, 
     });
 
     const DashboardButtonClick = () => {
@@ -68,7 +66,7 @@ const Availability = () => {
       alignItems: 'center',
       fontFamily: 'Helvetica, sans-serif',
       width: '100%',
-      position: 'fixed', // Ensures the header remains flush at the top
+      position: 'fixed',
       top: '0',
       left: '0',
       zIndex: 3,
@@ -110,7 +108,7 @@ const Availability = () => {
     const contentWrapperStyle = {
       position: 'relative',
       zIndex: 1,
-      padding: '10vw 5vw', // Extra padding to account for the fixed header
+      padding: '10vw 5vw',
       marginTop: '8vw',
     };
   
@@ -166,7 +164,7 @@ const Availability = () => {
     };
   
     const tableWrapperStyle = {
-      backgroundColor: '#fff', // Fully opaque white background
+      backgroundColor: '#fff',
       padding: '2vw',
       borderRadius: '0.5vw',
       boxShadow: '0 0.5vw 1vw rgba(0, 0, 0, 0.1)',
@@ -200,7 +198,7 @@ const Availability = () => {
           <button onClick={RequestAltButtonClick} style={buttonStyle}>Alternate Meeting</button>
         </div>
         <div style={contentWrapperStyle}>
-          <h3>Url of Meeting to check Hosts availability</h3>
+          <h3>Input a Hosts existing meeting to Check all Hosts available Meetings</h3>
             <form style={formStyle} onSubmit={onSubmitButton}>
               <input
                 type="text"

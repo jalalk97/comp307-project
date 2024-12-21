@@ -1,11 +1,14 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Logo from "../assests/logo2.png";
+import Logo from "../../public/logo3.png";
 import Home from "../assests/photo.jpg";
 import { FaRegCircleUser } from "react-icons/fa6";
 import { useSelector } from "react-redux";
 import { selectCurrentUser } from "../features/auth/authSlice";
 import { useCreateMeetingMutation } from "../features/meeting/meetingApiSlice";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { toastHelper } from "../../utils/toastHelper";
 
 const CreateBorrowMeeting = () => {
   const navigate = useNavigate();
@@ -32,6 +35,14 @@ const CreateBorrowMeeting = () => {
   };
 
   const handleSubmit = async () => {
+    if(!formData.startDate || !formData.endDate || !formData.startTime || !formData.endTime){
+      toastHelper("Please make sure all fields are filled out before creating", "error");
+      return;
+    }
+    if(new Date(formData.startDate) > new Date(formData.endDate)){
+      toastHelper("Borrow date or Return date is wrong", "error");
+      return;
+    }
     const meetingData = {
       dateRange: {
         startDate: formData.startDate,
@@ -51,14 +62,17 @@ const CreateBorrowMeeting = () => {
       if (meeting) {
         console.log("Meeting created:", meeting);
         setGeneratedURL(`${meeting.data.url}`);
+        toastHelper("Meeting was successfully created!");
       }
     } catch (error) {
+      toastHelper(error.data?.message, "error");
       console.error("Error creating meeting:", error);
     }
   };
 
   return (
       <div>
+        <ToastContainer/>
         <nav style={styles.navbar}>
           <div style={styles.navLeft}>
             <img
@@ -94,21 +108,16 @@ const CreateBorrowMeeting = () => {
           }}
         >
           <div style={{ width: "100%" }}>
-            <h2 style={{ marginBottom: "10px", marginTop: "30px" }}>Create a Meeting for Students to Borrow an item</h2>
+            <h2 style={{ marginBottom: "10px", marginTop: "30px" }}>Create a Meeting for User to Borrow an Item</h2>
   
             <div style={{ marginBottom: "10px", marginTop: "60px" }}>
-              <h3>Item to Borrow</h3>
-              <input
-                name="itemName"
-                value={formData.itemName}
-                onChange={handleInputChange}
-                style={{
-                  display: "block",
-                  width: "100%",
-                  padding: "10px",
-                  marginTop: "5px",
-                }}
-              />
+              <h3>*Before Booking*</h3>
+              <h3>One of the following equipment needs to be available to borrow:</h3>
+              <ul style={ {marginLeft: "30px"} }>
+                <li>Projector</li>
+                <li>Textbook</li>
+                <li>Laptop</li>
+              </ul>
             </div>
           </div>
   

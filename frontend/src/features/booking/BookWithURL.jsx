@@ -5,6 +5,9 @@ import { useCreateBookingMutation } from "./bookingApiSlice";
 import { useSelector } from "react-redux";
 import { selectCurrentUser } from "../auth/authSlice";
 import { useGetMeetingQuery } from "../meeting/meetingApiSlice";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { toastHelper } from "../../../utils/toastHelper";
 
 function sleep(seconds) {
     return new Promise((resolve) => setTimeout(resolve, seconds * 1000));
@@ -21,8 +24,6 @@ const BookWithURL = () => {
   const [meetingId, setMeetingId] = useState("");
   const [urlInput, setUrlInput] = useState("");
   const [nameInput, setnameInput] = useState(null);
-  const [successMessage, setSuccessMessage] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
 
 
 
@@ -52,13 +53,13 @@ const BookWithURL = () => {
   const createBookingPress = async (e) => {
     e.preventDefault();
     if(!meetingId){
-        setErrorMessage("Please input meeting URL before booking");
+        toastHelper("Please input a meeting URL before booking", "error");
         return;
     }
     const name = "";
     if(!currentUser){
         if(nameInput == "" || !nameInput){
-            setErrorMessage("Please give your name before booking");
+            toastHelper("You are not logged in, Please give your name before booking", "error");
             return;
         }
     }
@@ -74,18 +75,16 @@ const BookWithURL = () => {
         const booking = await createBooking(booking_data);
         console.log(booking);
         if(booking.error?.status === 400) {
-            setErrorMessage("You already booked this meeting");}
+            toastHelper("You already booked this meeting!", "error");}
 
         else{
-            setErrorMessage("");
             console.log("Booking created: ", booking);
-            setSuccessMessage("Booking Successfully Created! Navigating you back Home");
-            await sleep(2);
-            if(!currentUser){
-                navigate("/");}}
+            toastHelper("Meeting was successfully created!");
+            }
         }
          catch (error){
             console.error("Error creating booking: ", error);
+            toastHelper(error.data.message, "error")
         }
     };
 
@@ -198,6 +197,7 @@ const nameStyle = {
 return (
     <div style={containerStyle}>
         {/* Header */}
+        <ToastContainer />
         <header style={headerStyle}>
             <div>
             <img onClick={() => navigate(-1)} src="logo2.png" alt="Logo" width={"150px"} height={"120px"}/>
@@ -288,16 +288,6 @@ return (
                 />
                 <button type="submit" style={bookButtonStyle}>Book</button>
             </form>
-            {successMessage && (
-            <div style={{ color: "green", marginTop: "10px" }}>
-                {successMessage}
-            </div>
-            )}
-            {errorMessage && (
-            <div style={{ color: "red", marginTop: "10px" }}>
-                {errorMessage}
-            </div>
-            )}
         </div>
     </div>
 );
