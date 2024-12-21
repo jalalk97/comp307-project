@@ -1,3 +1,8 @@
+/* 
+Contributors:
+    - Jalal Kalyati
+*/
+
 import { useDispatch, useSelector } from "react-redux";
 import { selectToken } from "../features/auth/authSlice";
 import { useNavigate, Link } from "react-router-dom";

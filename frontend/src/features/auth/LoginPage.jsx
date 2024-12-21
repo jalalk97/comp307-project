@@ -1,3 +1,8 @@
+/* 
+Contributors:
+    - Jalal Kalyati (logic only, not view)
+*/
+
 import { useState } from "react";
 import { useNavigate } from "react-router-dom"; // For navigation
 import { useLoginMutation } from "./authApiSlice";

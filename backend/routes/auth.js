@@ -1,3 +1,8 @@
+/* 
+Contributors:
+    - Jalal Kalyati
+*/
+
 const authController = require("../controllers/auth");
 
 const router = require("express").Router();

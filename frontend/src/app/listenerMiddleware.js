@@ -1,3 +1,8 @@
+/* 
+Contributors:
+    - Jalal Kalyati
+*/
+
 import { createListenerMiddleware } from "@reduxjs/toolkit";
 import { loginListeners } from "../features/auth/authApiSlice";
 import { userLoggedOutListeners } from "../features/auth/authSlice";

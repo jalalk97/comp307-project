@@ -1,10 +1,14 @@
+/* 
+Contributors:
+    - Jalal Kalyati
+*/
+
 const express = require("express");
 const logger = require("morgan");
 const fs = require("fs");
 const cors = require("cors");
 const path = require("path");
 const connectDB = require("./config/db");
-const { errorHandler } = require("./utils/middleware");
 
 const app = express();
 

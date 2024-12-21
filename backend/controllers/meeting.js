@@ -1,6 +1,7 @@
 /* 
 Contributors:
     - Patrick Wilson 
+    - Jalal Kalyati (removeMeeting())
 */
 
 const Meeting = require("../models/meeting");

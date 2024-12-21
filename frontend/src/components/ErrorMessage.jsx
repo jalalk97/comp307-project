@@ -1,3 +1,8 @@
+/* 
+Contributors:
+    - Jalal Kalyati
+*/
+
 const ErrorMessage = ({ message }) => {
   return (
     <p

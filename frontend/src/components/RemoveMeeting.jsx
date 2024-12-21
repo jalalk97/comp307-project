@@ -1,3 +1,8 @@
+/* 
+Contributors:
+    - Jalal Kalyati (logic only, not view)
+*/
+
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { ToastContainer } from "react-toastify";

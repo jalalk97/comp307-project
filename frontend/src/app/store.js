@@ -1,3 +1,8 @@
+/* 
+Contributors:
+    - Jalal Kalyati
+*/
+
 import { configureStore } from "@reduxjs/toolkit";
 import meetingReducer from '../features/meeting/meetingSlice';
 import { apiSlice } from "../features/api/apiSlice";

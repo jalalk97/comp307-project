@@ -1,3 +1,8 @@
+/* 
+Contributors:
+    - Jalal Kalyati
+*/
+
 const User = require("../models/user");
 const bcrypt = require("bcrypt");
 const { validateMcGillEmail } = require("../utils/validation");
