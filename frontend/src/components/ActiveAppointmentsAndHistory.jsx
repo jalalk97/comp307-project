@@ -1,5 +1,5 @@
 import React from "react";
-import Logo from "../assests/logo2.png";
+import Logo from "../../public/logo3.png";
 import { useNavigate } from "react-router-dom";
 import AuthButtons from "./AuthButtons";
 import { useGetAllMeetingsQuery } from "../features/meeting/meetingApiSlice";
@@ -192,7 +192,7 @@ const ActiveAppointmentsAndHistory = () => {
                   <tbody>
                     {historyAppointments.map((meeting) => (
                       <tr key={meeting.id}>
-                        <td style={thTdStyle}>{"https://comp307-project-ibhi.onrender.com/meetings/" + meeting.id}</td>
+                        <td style={thTdStyle}>{"https://comp307-project-ibhi.onrender.com/meetings/" + meeting.id} </td>
                         <td style={thTdStyle}>{meeting.host.name}</td>
                         <td style={thTdStyle}>
                           {new Date(meeting.dateRange.startDate).toLocaleDateString()}
