@@ -2,6 +2,7 @@
 Contributors:
     - Patrick Wilson 
     - Jalal Kalyati (removeMeeting())
+    -Giuseppe Caruana (getAllMeetings())
 */
 
 const Meeting = require("../models/meeting");
