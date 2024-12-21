@@ -4,6 +4,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { useGetAvailabilityQuery } from "./meetingApiSlice";
 import { startFetchMeeting, fetchMeeting } from "./meetingSlice";
 
+/* 
+Contributors:
+    - Patrick Wilson 
+*/
+
 
 const Availability = () => {
     const navigate = useNavigate();

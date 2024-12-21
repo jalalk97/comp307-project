@@ -10,6 +10,12 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { toastHelper } from "../../utils/toastHelper";
 
+/* 
+Contributors:
+    - Patrick Wilson 
+*/
+
+
 const CreateBorrowMeeting = () => {
   const navigate = useNavigate();
 

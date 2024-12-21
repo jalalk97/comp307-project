@@ -1,5 +1,11 @@
 const mongoose = require("mongoose");
 
+/* 
+Contributors:
+    - Patrick Wilson 
+*/
+
+
 const feedbackSchema = new mongoose.Schema({
     /*user: { //make anon for now, if we want users to implement later
       type: userSchema,

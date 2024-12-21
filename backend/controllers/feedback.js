@@ -1,3 +1,8 @@
+/* 
+Contributors:
+    - Patrick Wilson 
+*/
+
 const Feedback = require("../models/feedback");
 
 //function creates a feedback object and sends it to db

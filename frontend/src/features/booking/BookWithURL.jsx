@@ -1,6 +1,5 @@
 import {useState} from "react";
 import { useNavigate } from "react-router-dom";
-//import Logo from "../assests/logo2.png";
 import { useCreateBookingMutation } from "./bookingApiSlice";
 import { useSelector } from "react-redux";
 import { selectCurrentUser } from "../auth/authSlice";
@@ -8,6 +7,10 @@ import { useGetMeetingQuery } from "../meeting/meetingApiSlice";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { toastHelper } from "../../../utils/toastHelper";
+/* 
+Contributors:
+    - Patrick Wilson 
+*/
 
 function sleep(seconds) {
     return new Promise((resolve) => setTimeout(resolve, seconds * 1000));

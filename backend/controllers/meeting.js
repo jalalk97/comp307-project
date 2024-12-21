@@ -1,3 +1,8 @@
+/* 
+Contributors:
+    - Patrick Wilson 
+*/
+
 const Meeting = require("../models/meeting");
 
 //function will return a meeting with the required URL

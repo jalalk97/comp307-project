@@ -1,5 +1,10 @@
 const mongoose = require("mongoose");
 
+/* 
+Contributors:
+    - Patrick Wilson 
+*/
+
 
 const bookingSchema = new mongoose.Schema ({
     meeting : {

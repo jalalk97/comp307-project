@@ -1,5 +1,11 @@
 import { apiSlice } from "../api/apiSlice";
 
+/* 
+Contributors:
+    - Patrick Wilson 
+*/
+
+
 export const feedbackApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     createFeedback: builder.mutation({

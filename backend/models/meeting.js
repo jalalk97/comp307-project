@@ -1,5 +1,11 @@
 const mongoose = require("mongoose");
 
+/* 
+Contributors:
+    - Patrick Wilson 
+*/
+
+
 const meetingSchema = new mongoose.Schema({
   dateRange: {
     startDate: { type: Date, required: true },

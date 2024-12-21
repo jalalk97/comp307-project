@@ -6,6 +6,12 @@ import "react-toastify/dist/ReactToastify.css";
 import './css/Dashboard.css'
 import { selectCurrentUser, userLoggedOut } from "../features/auth/authSlice";
 
+/* 
+Contributors:
+    - Patrick Wilson 
+*/
+
+
 const Dashboard = () => {
     //allowing navigation between routes if a button press is ativated
     //need to add a function for checking if tokens are valid

@@ -1,5 +1,11 @@
 import { apiSlice } from "../api/apiSlice";
 
+/* 
+Contributors:
+    - Patrick Wilson 
+*/
+
+
 export const meetingApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getMeeting: builder.query({

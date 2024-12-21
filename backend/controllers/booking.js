@@ -1,3 +1,8 @@
+/* 
+Contributors:
+    - Patrick Wilson 
+*/
+
 const Booking = require("../models/booking");
 
 async function createBooking(req, res){
