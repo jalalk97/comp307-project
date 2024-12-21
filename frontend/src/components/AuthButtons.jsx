@@ -52,6 +52,7 @@ const styles = {
     gap: "20px",
     flexWrap: "wrap",
     padding: "8px 1px",
+    marginRight: "20px"
   },
   navButton: {
     backgroundColor: "#ffffff",

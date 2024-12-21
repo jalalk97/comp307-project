@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Logo from "../assests/logo2.png";
+import Logo from "/public/logo2.png";
 import Home from "../assests/photo.jpg";
 import { FaRegCircleUser } from "react-icons/fa6";
 import { useSelector } from "react-redux";
