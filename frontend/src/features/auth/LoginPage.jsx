@@ -1,6 +1,7 @@
 /* 
 Contributors:
     - Jalal Kalyati (logic only, not view)
+    -Giuseppe Caruana (view)
 */
 
 import { useState } from "react";
