@@ -4,6 +4,7 @@ const fs = require("fs");
 const cors = require("cors");
 const path = require("path");
 const connectDB = require("./config/db");
+const { errorHandler } = require("./utils/middleware");
 
 const app = express();
 
@@ -36,8 +37,8 @@ app.use("/feedback", require("./routes/feedback"));
 app.use("/meeting", require("./routes/meeting"));
 app.use("/booking", require("./routes/booking"));
 
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'dist', 'index.html'));
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "dist", "index.html"));
 });
 
 module.exports = app;
