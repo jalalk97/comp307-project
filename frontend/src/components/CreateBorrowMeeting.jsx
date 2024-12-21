@@ -5,21 +5,26 @@ import Home from "../assests/photo.jpg";
 import { FaRegCircleUser } from "react-icons/fa6";
 import { useSelector } from "react-redux";
 import { selectCurrentUser } from "../features/auth/authSlice";
+import { useCreateMeetingMutation } from "../features/meeting/meetingApiSlice";
 
 const CreateBorrowMeeting = () => {
   const navigate = useNavigate();
+
   const currentUser = useSelector(selectCurrentUser);
 
+  const [createMeeting] = useCreateMeetingMutation();
+
+  const [generatedURL, setGeneratedURL] = useState(null);
+
   const [formData, setFormData] = useState({
+    itemName: "",
+    name: "",
     startDate: "",
     endDate: "",
     startTime: "",
     endTime: "",
-    multiple_people: false,
-    is_weekly: false,
   });
 
-  const [generatedURL, setGeneratedURL] = useState("");
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -27,11 +32,6 @@ const CreateBorrowMeeting = () => {
   };
 
   const handleSubmit = async () => {
-    const randomURL = `https://items-to-borrow.com/${Math.random()
-      .toString(36)
-      .substr(2, 9)}`;
-    setGeneratedURL(randomURL);
-
     const meetingData = {
       dateRange: {
         startDate: formData.startDate,
@@ -41,265 +41,201 @@ const CreateBorrowMeeting = () => {
         startTime: formData.startTime,
         endTime: formData.endTime,
       },
-      host: currentUser?.id,
-      multiple_people: formData.multiple_people,
-      is_weekly: formData.is_weekly,
-      url: randomURL,
+      host: currentUser.id,
+      is_borrow: true,
     };
 
-    try {
-      const response = await fetch("http://localhost:4000/borrow", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(meetingData),
-      });
-
-      const data = await response.json();
-      console.log("Borrow request created:", data);
-      setGeneratedURL(data.url); // Update URL from response if needed
+    try{
+      console.log("creating meeting");
+      const meeting = await createMeeting(meetingData);
+      if (meeting) {
+        console.log("Meeting created:", meeting);
+        setGeneratedURL(`${meeting.data.url}`);
+      }
     } catch (error) {
-      console.error("Error creating borrow request:", error);
+      console.error("Error creating meeting:", error);
     }
   };
 
   return (
-    <div style={{ fontFamily: "Arial, sans-serif", fontSize: "1.5vw" }}>
-      <nav style={styles.navbar}>
-        <div style={styles.navLeft}>
-          <img onClick={() => navigate(-1)}
-            src={Logo}
-            alt="logo"
-            style={{ width: "15vw", height: "auto" }}
-          />
-        </div>
-        <div>
-          <button
-            style={styles.backButton}
-            onClick={() => navigate("/dashboard")}
-          >
-            Back to Dashboard
-          </button>
-        </div>
-      
-      </nav>
-
-      <div style={styles.mainContainer}>
-        <div style={styles.leftPanel}>
-          <h1 style={{ marginBottom: "2vw", fontSize: "2.5vw" }}>Items to Borrow</h1>
-
-          <div style={{ marginBottom: "2vw" }}>
-            <h3 style={{ fontSize: "1.8vw", margin: 0 }}>Item</h3>
-            <input
-              name="item"
-              value={formData.item}
-              onChange={handleInputChange}
-              style={styles.input}
-              placeholder=""
+      <div>
+        <nav style={styles.navbar}>
+          <div style={styles.navLeft}>
+            <img
+              onClick={() => navigate(-1)}
+              src={Logo}
+              alt="logo"
+              width={150}
+              height={100}
             />
           </div>
-
-          <div style={styles.dateTimeRow}>
-            <div style={styles.dateTimeField}>
-              <h3 style={{ fontSize: "1.8vw", margin: 0 }}>Borrow Date *</h3>
+          <div>
+            <button
+              style={{
+                padding: "10px 20px",
+                background: "#990000",
+                border: "1px solid #fff",
+                color: "#fff",
+              }}
+              onClick={() => navigate("/dashboard")}
+            >
+              Back to Dashboard
+            </button>
+          </div>
+        </nav>
+  
+        <div
+          style={{
+            padding: "10px 20px",
+            display: "flex",
+            width: "100%",
+            justifyContent: "center",
+            alignItems: "start",
+          }}
+        >
+          <div style={{ width: "100%" }}>
+            <h2 style={{ marginBottom: "10px", marginTop: "30px" }}>Create a Meeting for Students to Borrow an item</h2>
+  
+            <div style={{ marginBottom: "10px", marginTop: "60px" }}>
+              <h3>Item to Borrow</h3>
               <input
-                name="borrowDate"
-                value={formData.startDate}
+                name="itemName"
+                value={formData.itemName}
                 onChange={handleInputChange}
-                style={styles.smallInput}
-                placeholder="dd/mm/yyyy"
+                style={{
+                  display: "block",
+                  width: "100%",
+                  padding: "10px",
+                  marginTop: "5px",
+                }}
               />
-            </div>
-            <div style={styles.dateTimeField}>
-              <h3 style={{ fontSize: "1.8vw", margin: 0 }}>Return Date *</h3>
-              <input
-                name="returnDate"
-                value={formData.endDate}
-                onChange={handleInputChange}
-                style={styles.smallInput}
-                placeholder="dd/mm/yyyy"
-              />
-            </div>
-            <div style={styles.dateTimeField}>
-              <h3 style={{ fontSize: "1.8vw", margin: 0 }}>Borrow Time *</h3>
-              <div style={styles.timeContainer}>
-                <input
-                  name="borrowTime"
-                  value={formData.startTime}
-                  onChange={handleInputChange}
-                  style={styles.timeInput}
-                  placeholder="00:00"
-                />
-                <select
-                  name="borrowAmPm"
-                  value={formData.endDate}
-                  onChange={handleInputChange}
-                  style={styles.amPmSelect}
-                >
-                  <option value="am">am</option>
-                  <option value="pm">pm</option>
-                </select>
-              </div>
-            </div>
-            <div style={styles.dateTimeField}>
-              <h3 style={{ fontSize: "1.8vw", margin: 0 }}>Return Time *</h3>
-              <div style={styles.timeContainer}>
-                <input
-                  name="returnTime"
-                  value={formData.returnTime}
-                  onChange={handleInputChange}
-                  style={styles.timeInput}
-                  placeholder="00:00"
-                />
-                <select
-                  name="returnAmPm"
-                  value={formData.returnAmPm}
-                  onChange={handleInputChange}
-                  style={styles.amPmSelect}
-                >
-                  <option value="am">am</option>
-                  <option value="pm">pm</option>
-                </select>
-              </div>
             </div>
           </div>
-
-          <button style={styles.getUrlButton} onClick={handleSubmit}>
+  
+          <div
+            style={{
+              width: "100%",
+              display: "flex",
+              justifyContent: "flex-end",
+            }}
+          >
+            <div
+              style={{
+                width: "70%",
+                border: "4px solid red",
+                height: "300px",
+                backgroundImage: `url(${Home})`,
+                backgroundSize: "cover",
+                backgroundPosition: "center",
+              }}
+            ></div>
+          </div>
+        </div>
+  
+        <div style={{ padding: "10px 20px" }}>
+          <div style={{ display: "flex", flexWrap: "wrap" }}>
+            <div style={{ margin: "10px" }}>
+              <h3>Borrow Date</h3>
+              <input
+                name="startDate"
+                value={formData.startDate}
+                onChange={handleInputChange}
+                style={{
+                  display: "block",
+                  width: "200px",
+                  padding: "10px",
+                  marginTop: "5px",
+                }}
+                type="date"
+              />
+            </div>
+            <div style={{ margin: "10px" }}>
+              <h3>Return Date</h3>
+              <input
+                name="endDate"
+                value={formData.endDate}
+                onChange={handleInputChange}
+                style={{
+                  display: "block",
+                  width: "200px",
+                  padding: "10px",
+                  marginTop: "5px",
+                }}
+                type="date"
+              />
+            </div>
+            <div style={{ margin: "10px" }}>
+              <h3>Pick up Time</h3>
+              <input
+                name="startTime"
+                value={formData.startTime}
+                onChange={handleInputChange}
+                style={{
+                  display: "block",
+                  width: "200px",
+                  padding: "10px",
+                  marginTop: "5px",
+                }}
+                type="time"
+              />
+            </div>
+            <div style={{ margin: "10px" }}>
+              <h3>Retun Time</h3>
+              <input
+                name="endTime"
+                value={formData.endTime}
+                onChange={handleInputChange}
+                style={{
+                  display: "block",
+                  width: "200px",
+                  padding: "10px",
+                  marginTop: "5px",
+                }}
+                type="time"
+              />
+            </div>
+          </div>
+        </div>
+  
+        <div style={{ padding: "10px 20px" }}>
+          <button
+            onClick={handleSubmit}
+            style={{ padding: "10px 20px", background: "#990000", color: "#fff" }}
+          >
             GET URL
           </button>
-
           {generatedURL && (
-            <div style={{ marginTop: "2vw" }}>
-              <h3 style={{ fontSize: "2vw", margin: 0 }}>Generated URL:</h3>
-              <p style={{ fontSize: "1.5vw" }}>{generatedURL}</p>
+            <div style={{ marginTop: "20px" }}>
+              <h3>Generated URL:</h3>
+              <p>{generatedURL}</p>
             </div>
           )}
         </div>
-
-        <div style={styles.rightPanel}>
-          <div style={styles.imageContainer}></div>
-        </div>
       </div>
-    </div>
-  );
-};
-
-const styles = {
-  navbar: {
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "center",
-    padding: "1vw 2vw",
-    backgroundColor: "#990000",
-    flexWrap: "wrap",
-  },
-  navLeft: {
-    display: "flex",
-    alignItems: "center",
-    gap: "2vw",
-  },
-  navRight: {
-    display: "flex",
-    gap: "2vw",
-    padding: "1vw 0.5vw",
-  },
-  backButton: {
-    padding: "1vw 2vw",
-    background: "#990000",
-    border: "0.2vw solid #fff",
-    color: "#fff",
-    cursor: "pointer",
-    fontWeight: "bold",
-    borderRadius: "0.5vw",
-    fontSize: "1.5vw",
-  },
-  mainContainer: {
-    display: "flex",
-    width: "100%",
-    padding: "2vw",
-    justifyContent: "center",
-    alignItems: "flex-start",
-    boxSizing: "border-box",
-  },
-  leftPanel: {
-    width: "50%",
-    paddingRight: "2vw",
-    boxSizing: "border-box",
-  },
-  rightPanel: {
-    width: "50%",
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "flex-start",
-  },
-  imageContainer: {
-    width: "50vw",
-    height: "30vh",
-    border: "0.4vw solid red",
-    backgroundImage: `url(${Home})`,
-    backgroundSize: "cover",
-    backgroundPosition: "center",
-  },
-  input: {
-    display: "block",
-    width: "40vw",
-    padding: "1vw",
-    marginTop: "0.5vw",
-    border: "0.2vw solid #ccc",
-    borderRadius: "0.5vw",
-    fontSize: "1.5vw",
-  },
-  dateTimeRow: {
-    display: "flex",
-    flexWrap: "wrap",
-    gap: "2vw",
-    marginBottom: "2vw",
-  },
-  dateTimeField: {
-    display: "flex",
-    flexDirection: "column",
-  },
-  smallInput: {
-    display: "block",
-    width: "15vw",
-    padding: "1vw",
-    marginTop: "0.5vw",
-    border: "0.2vw solid #000",
-    borderRadius: "0.5vw",
-    fontSize: "1.5vw",
-  },
-  timeContainer: {
-    display: "flex",
-    gap: "1vw",
-    marginTop: "0.5vw",
-    alignItems: "center",
-  },
-  timeInput: {
-    width: "10vw",
-    padding: "1vw",
-    border: "0.2vw solid #000",
-    borderRadius: "0.5vw",
-    fontSize: "1.5vw",
-  },
-  amPmSelect: {
-    padding: "1vw",
-    border: "0.2vw solid #000",
-    borderRadius: "0.5vw",
-    background: "#fff",
-    cursor: "pointer",
-    fontSize: "1.5vw",
-  },
-  getUrlButton: {
-    padding: "1vw 2vw",
-    background: "#990000",
-    color: "#fff",
-    border: "none",
-    cursor: "pointer",
-    fontWeight: "bold",
-    borderRadius: "0.5vw",
-    fontSize: "1.5vw",
-  },
-};
-
+    );
+  };
+  
+  const styles = {
+    navbar: {
+      display: "flex",
+      justifyContent: "space-between",
+      alignItems: "center",
+      padding: "10px 20px",
+      backgroundColor: "#990000",
+      flexWrap: "wrap",
+    },
+    navLeft: {
+      display: "flex",
+      gap: "20px",
+      flexWrap: "nowrap",
+      padding: "8px 1px",
+    },
+    navRight: {
+      display: "flex",
+      gap: "20px",
+      flexWrap: "wrap",
+      padding: "8px 1px",
+    },
+  };
+  
 export default CreateBorrowMeeting;

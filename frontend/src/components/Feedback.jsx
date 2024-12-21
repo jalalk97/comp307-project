@@ -1,5 +1,6 @@
 import React from "react";
-import { useNavigate  } from "react-router-dom";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import './css/Feedback.css';
 import { useCreateFeedbackMutation } from "../features/feedback/feedbackApiSlice";
 
@@ -7,6 +8,20 @@ const Feedback = () => {
     const navigate = useNavigate();
 
     const [createFeedback] = useCreateFeedbackMutation();
+    const [successMessage, setSuccessMessage] = useState("");
+    const [errorMessage, setErrorMessage] = useState("");
+    const [submitted, setSubmitted] = useState(false);
+    const [formData, setFormData] = useState ({
+      rating: "",
+      comment: "",
+    });
+
+    const handleInputChange = (e) => {
+      setErrorMessage("");
+      setSuccessMessage("");
+      const { name, value } = e.target;
+      setFormData({ ...formData, [name]: value });
+    };
 
     //navigate back to Dashboard
     const handleDashboardButton = () => {
@@ -16,23 +31,28 @@ const Feedback = () => {
     //prepare feedback submission and send to backend
     const handleSubmitClick = async () => {
         //will find the value of the input that is currently selected if none is selected will raise an error
-        const rating = document.querySelector('input[name="rating"]:checked')?.value;
-        const comments = document.getElementById("comments").value;
-
+        if(submitted){
+          setErrorMessage("You already submitted a rating!");
+          return;
+        }
+        const rating = formData.rating;
+        const comment = formData.comment;
+        console.log(formData);
         if(!rating) {
-            alert("Please select a rating before submitting");
+            setErrorMessage("Please set a rating before submitting!");
             return;
         }
         console.log("Rating is", rating);
         console.log("Feedback is", comments);
-        const payload = {rating: rating, comment: comments}
+        const payload = {rating: rating, comment: comment}
 
         console.log(payload);
         //fetch backend and check if data was successfully submitted
         try{
             await createFeedback(payload);       
             console.log("feedback successfully submitted");
-            navigate("/Dashboard");
+            setSuccessMessage("Thanks for your feedback!");
+            setSubmitted(true);
         }
         catch (error){
             console.error("The following error occured", error);
@@ -53,45 +73,38 @@ const Feedback = () => {
               <p>Rate your experience using EZ Booking from 1-10</p>
             </div>
             <div className="rating">
-              <input type="radio" id="rate1" name="rating" value="1" />
-              <label htmlFor="rate1">1</label>
-
-              <input type="radio" id="rate2" name="rating" value="2" />
-              <label htmlFor="rate2">2</label>
-
-              <input type="radio" id="rate3" name="rating" value="3" />
-              <label htmlFor="rate3">3</label>
-
-              <input type="radio" id="rate4" name="rating" value="4" />
-              <label htmlFor="rate4">4</label>
-
-              <input type="radio" id="rate5" name="rating" value="5" />
-              <label htmlFor="rate5">5</label>
-
-              <input type="radio" id="rate6" name="rating" value="6" />
-              <label htmlFor="rate6">6</label>
-
-              <input type="radio" id="rate7" name="rating" value="7" />
-              <label htmlFor="rate7">7</label>
-
-              <input type="radio" id="rate8" name="rating" value="8" />
-              <label htmlFor="rate8">8</label>
-
-              <input type="radio" id="rate9" name="rating" value="9" />
-              <label htmlFor="rate9">9</label>
-
-              <input type="radio" id="rate10" name="rating" value="10" />
-              <label htmlFor="rate10">10</label>
+              {Array.from({ length: 10 }, (_, i) => i + 1).map((value) => (
+                <div key={value}>
+                  <input
+                    type="radio"
+                    id={`rate${value}`}
+                    name="rating"
+                    value={value}
+                    onChange={handleInputChange}
+                  />
+                  <label htmlFor={`rate${value}`}>{value}</label>
+                </div>
+              ))}
             </div>
             <div className="comment">
               <p>Comments? (Optional)</p>
-              <textarea
-                id="comments"
-                className="area"
-                name="message"
-                maxLength="1000"
-                placeholder="Tell us your feedback here..."
-              ></textarea>
+                <textarea
+                    id="comments"
+                    value={formData.comment}
+                    className="area"
+                    name="comment"
+                    maxLength="1000"
+                    placeholder="Tell us your feedback here..."
+                    onChange={handleInputChange}
+                  ></textarea>
+
+                  {errorMessage && (
+                    <div style={{ color: "red", marginBottom: "10px" }}>{errorMessage}</div>
+                  )}
+
+                  {successMessage && (
+                    <div style={{ color: "green", marginBottom: "10px" }}>{successMessage}</div>
+                  )}
             </div>
             <div className="buttons">
               <button

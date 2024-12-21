@@ -45,7 +45,7 @@ async function getMeeting(req, res) {
 
 async function createMeeting(req, res) {
   try {
-    const { dateRange, timeRange, host, multiple_people, is_weekly } = req.body;
+    const { dateRange, timeRange, host, multiple_people, is_weekly, is_borrow } = req.body;
 
     console.log({ dateRange, timeRange, host });
     if (!dateRange || !timeRange || !host) {
@@ -54,12 +54,15 @@ async function createMeeting(req, res) {
       });
     }
 
+    console.log("THIS IS IS_borrow: ", is_borrow);
+
     const newMeeting = new Meeting({
       dateRange,
       timeRange,
       host,
-      multiple_people: multiple_people || false,
+      multiple_people: true,
       is_weekly: is_weekly || false,
+      to_borrow: is_borrow || false,
     });
 
     await newMeeting.save();

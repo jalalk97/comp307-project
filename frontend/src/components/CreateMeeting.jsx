@@ -16,6 +16,7 @@ const CreateMeeting = () => {
 
   const [generatedURL, setGeneratedURL] = useState(null);
 
+
   const [formData, setFormData] = useState({
     bookingName: "",
     name: "",
@@ -23,7 +24,6 @@ const CreateMeeting = () => {
     endDate: "",
     startTime: "",
     endTime: "",
-    bookingType: false,
   });
 
   const handleInputChange = (e) => {

@@ -13,6 +13,8 @@ const Availability = () => {
     
     const [urlInput, setUrlInput] = useState("");
     const [meetingId, setMeetingId] = useState("");
+    const [successMessage, setSuccessMessage] = useState("");
+    const [errorMessage, setErrorMessage] = useState("");
 
     const { data, error, isLoading } = useGetAvailabilityQuery(meetingId, {
       skip: !meetingId, // Prevents query execution until meetingId is set
@@ -40,23 +42,7 @@ const Availability = () => {
 
       setMeetingId(id);
 
-      //console.log("data", data);
 
-      /*
-      try {
-        dispatch(startFetchMeeting());
-        if(data){
-          dispatch(fetchMeeting(data.meeting));
-        } else {
-            alert("No data found for the provided URL");
-            return;
-        } 
-      } catch (err) {
-        console.error("Error fetching meeting data", err);
-        alert("Failed to get meeting data. Try again.");
-        
-      }*/
-      
     };
 
 

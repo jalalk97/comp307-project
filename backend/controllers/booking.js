@@ -11,6 +11,15 @@ async function createBooking(req, res){
                 message: "Missing required fields: meeting, timeRange or user.",
               });
             }
+        
+        const similar_booking = await Booking.find( {meeting: meeting, user: user} ).exec();
+
+        if(similar_booking.length > 0) {
+            res.status(400).json({
+                message: "Already created this booking"
+            });
+            return;
+        }
 
         const newBooking = new Booking({
             meeting,

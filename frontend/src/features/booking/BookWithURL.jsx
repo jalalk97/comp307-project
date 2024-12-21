@@ -22,6 +22,7 @@ const BookWithURL = () => {
   const [urlInput, setUrlInput] = useState("");
   const [nameInput, setnameInput] = useState(null);
   const [successMessage, setSuccessMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
 
 
 
@@ -50,35 +51,39 @@ const BookWithURL = () => {
 
   const createBookingPress = async (e) => {
     e.preventDefault();
+    if(!meetingId){
+        setErrorMessage("Please input meeting URL before booking");
+        return;
+    }
     const name = "";
     if(!currentUser){
         if(nameInput == "" || !nameInput){
-            alert("Please give your name before booking");
+            setErrorMessage("Please give your name before booking");
             return;
         }
     }
     const booking_data = {
         meeting: data.meeting_data.id,
         dateRange: data.meeting_data.dateRange,
-        is_borrowed: data.meeting_data.is_borrowed,
+        is_borrowed: data.meeting_data.to_borrowed,
         user: currentUser?.id || null,
         name: nameInput,
         item_borrow: null,
     };
     try {
         const booking = await createBooking(booking_data);
-        if(booking) {
+        console.log(booking);
+        if(booking.error?.status === 400) {
+            setErrorMessage("You already booked this meeting");}
+
+        else{
+            setErrorMessage("");
             console.log("Booking created: ", booking);
             setSuccessMessage("Booking Successfully Created! Navigating you back Home");
             await sleep(2);
             if(!currentUser){
-                navigate("/");
-            }
-            else{
-                navigate("/dashboard");
-            }
-            return;
-        }}
+                navigate("/");}}
+        }
          catch (error){
             console.error("Error creating booking: ", error);
         }
@@ -92,6 +97,7 @@ const BookWithURL = () => {
     display: "flex",
     flexDirection: "column",
     minHeight: "100vh",
+    width: "100%",
 };
 
 const headerStyle = {
@@ -132,7 +138,7 @@ const inputStyle = {
     padding: "10px",
     border: "1px solid #ccc",
     borderRadius: "4px",
-    width: "80%",
+    width: "100%",
     marginRight: "10px",
     fontSize: "1rem",
 };
@@ -154,17 +160,22 @@ const resultsContainerStyle = {
     borderRadius: "5px",
     padding: "20px",
     boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.1)",
+    width: "100%",
 };
 
 const tableStyle = {
     width: "100%",
-    borderCollapse: "collapse",
+    borderCollapse: "seperate",
 };
 
 const thTdStyle = {
-    border: "1px solid #ccc",
-    padding: "10px",
-    textAlign: "center",
+    border: '0.2vw solid #ccc',
+    padding: '1vw',
+    fontSize: '1.2vw',
+    textAlign: 'center',
+    fontFamily: 'Arial, sans-serif',
+    fontWeight: '400',
+    color: 'black',
 };
 
 const bookButtonStyle = {
@@ -280,6 +291,11 @@ return (
             {successMessage && (
             <div style={{ color: "green", marginTop: "10px" }}>
                 {successMessage}
+            </div>
+            )}
+            {errorMessage && (
+            <div style={{ color: "red", marginTop: "10px" }}>
+                {errorMessage}
             </div>
             )}
         </div>
