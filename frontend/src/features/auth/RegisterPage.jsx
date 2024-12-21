@@ -5,10 +5,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-import {
-  useLoginMutation,
-  useRegisterMutation,
-} from "./authApiSlice";
+import { useLoginMutation, useRegisterMutation } from "./authApiSlice";
 import { userLoggedIn } from "./authSlice";
 
 import ErrorMessage from "../../components/ErrorMessage";
@@ -56,7 +53,12 @@ const RegisterPage = () => {
       dispatch(userLoggedIn(token, user));
       navigate("/Dashboard");
     } catch (err) {
-      setError(err.data.message);
+      if (err.data) {
+        setError(err.data.message);
+      } else {
+        console.log(err);
+        setError("An unexpected error occured");
+      }
     }
   };
 

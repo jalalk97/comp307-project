@@ -1,5 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, Link} from "react-router-dom";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 import './css/Dashboard.css'
 import { selectCurrentUser, userLoggedOut } from "../features/auth/authSlice";
@@ -37,6 +39,7 @@ const Dashboard = () => {
             </div>
           </header>
     
+          <ToastContainer />
 
           <main className="main-content">
             {/*need to add user name*/}

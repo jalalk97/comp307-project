@@ -5,4 +5,4 @@ import { userLoggedOutListeners } from "../features/auth/authSlice";
 export const listenerMiddleware = createListenerMiddleware();
 
 loginListeners(listenerMiddleware.startListening);
-userLoggedOutListeners(listenerMiddleware.startListening)
+userLoggedOutListeners(listenerMiddleware.startListening);
