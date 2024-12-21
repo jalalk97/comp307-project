@@ -10,6 +10,7 @@ import { toastHelper } from "../../../utils/toastHelper";
 /* 
 Contributors:
     - Patrick Wilson 
+    -Giuseppe Caruana
 */
 
 function sleep(seconds) {
